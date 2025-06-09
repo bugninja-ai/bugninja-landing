@@ -1,0 +1,28 @@
+{
+  "name": "bugninja-monorepo",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "dev:app": "npm run dev --workspace=@bugninja/app",
+    "dev:landing": "npm run dev --workspace=@bugninja/landing",
+    "dev:all": "concurrently \"npm run dev:app\" \"npm run dev:landing\"",
+    "build:app": "npm run build --workspace=@bugninja/app",
+    "build:landing": "npm run build --workspace=@bugninja/landing",
+    "build:all": "npm run build --workspace=@bugninja/app && npm run build --workspace=@bugninja/landing",
+    "lint:app": "npm run lint --workspace=@bugninja/app",
+    "lint:landing": "npm run lint --workspace=@bugninja/landing",
+    "lint:all": "npm run lint --workspace=@bugninja/app && npm run lint --workspace=@bugninja/landing",
+    "type-check:app": "npm run type-check --workspace=@bugninja/app",
+    "type-check:landing": "npm run type-check --workspace=@bugninja/landing",
+    "type-check:all": "npm run type-check --workspace=@bugninja/app && npm run type-check --workspace=@bugninja/landing"
+  },
+  "dependencies": {
+    "client-only": "^0.0.1"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}

@@ -1,0 +1,111 @@
+services:
+  app:
+    image: node:21-alpine
+    ports:
+      - "3002:3002"
+    volumes:
+      - .:/workspace
+    working_dir: /workspace
+    environment:
+      - NODE_ENV=development
+      - NEXT_TELEMETRY_DISABLED=1
+      - WATCHPACK_POLLING=true
+      - NODE_OPTIONS=--no-deprecation
+    command: sh -c "npm install --no-package-lock && npm run dev:app"
+    networks:
+      - webapp-network
+    restart: unless-stopped
+
+  landing:
+    image: node:21-alpine
+    ports:
+      - "3001:3001"
+    volumes:
+      - .:/workspace
+    working_dir: /workspace
+    environment:
+      - NODE_ENV=development
+      - NEXT_TELEMETRY_DISABLED=1
+      - WATCHPACK_POLLING=true
+      - NODE_OPTIONS=--no-deprecation
+    command: sh -c "npm install --no-package-lock && npm run dev:landing"
+    networks:
+      - webapp-network
+    restart: unless-stopped
+
+  umami:
+    image: ghcr.io/umami-software/umami:postgresql-latest
+    ports:
+      - "8080:8080"
+    environment:
+      DATABASE_URL: postgresql://postgres:postgres@db:5432/umami
+      DATABASE_TYPE: postgresql
+      APP_SECRET: replace-me-with-a-random-string
+      PORT: 8080
+    depends_on: 
+      db:
+        condition: service_healthy
+    init: true
+    restart: always
+    networks:
+      - webapp-network
+    healthcheck:
+      test: ["CMD-SHELL", "curl http://localhost:8080/api/heartbeat"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  cms:
+    build:
+      context: ./cms
+      dockerfile: ../infrastructure/docker/cms.Dockerfile
+    ports:
+      - "1337:1337"
+    volumes:
+      - ./cms:/app
+      - /app/node_modules
+    environment:
+      - DATABASE_CLIENT=postgres
+      - DATABASE_HOST=db
+      - DATABASE_PORT=5432
+      - DATABASE_NAME=strapi
+      - DATABASE_USERNAME=postgres
+      - DATABASE_PASSWORD=postgres
+      - NODE_ENV=development
+      - ADMIN_JWT_SECRET=admin-jwt-secret-key-change-me
+      - STRAPI_JWT_SECRET=jwt-secret-key-change-me
+      - STRAPI_APP_KEYS=app-key-1,app-key-2,app-key-3,app-key-4
+      - API_TOKEN_SALT=api-token-salt-change-me
+      - TRANSFER_TOKEN_SALT=transfer-token-salt-change-me
+    command: sh -c "npm install && chmod +x ./start.sh && ./start.sh"
+    depends_on:
+      - db
+    networks:
+      - webapp-network
+    restart: unless-stopped
+
+  db:
+    image: postgres:16-alpine
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+      - ./infrastructure/docker/init-multiple-dbs.sh:/docker-entrypoint-initdb.d/init-multiple-dbs.sh
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_MULTIPLE_DATABASES=webapp_skeleton,strapi,umami
+    networks:
+      - webapp-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+networks:
+  webapp-network:
+    driver: bridge
+
+volumes:
+  postgres-data:

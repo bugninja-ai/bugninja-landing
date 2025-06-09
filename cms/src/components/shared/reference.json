@@ -1,0 +1,44 @@
+{
+  "collectionName": "components_shared_references",
+  "info": {
+    "displayName": "Reference",
+    "description": "Citations and sources for articles"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "url": {
+      "type": "string"
+    },
+    "authors": {
+      "type": "string"
+    },
+    "publisher": {
+      "type": "string"
+    },
+    "publishDate": {
+      "type": "date"
+    },
+    "description": {
+      "type": "text"
+    },
+    "referenceType": {
+      "type": "enumeration",
+      "enum": [
+        "Website",
+        "Book",
+        "Journal",
+        "Article",
+        "Research Paper",
+        "Video",
+        "Podcast",
+        "Interview",
+        "Other"
+      ],
+      "default": "Website"
+    }
+  }
+} 
