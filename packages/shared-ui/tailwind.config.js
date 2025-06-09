@@ -1,9 +1,18 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
+    // Shared UI components
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
     "./lib/**/*.{js,ts,jsx,tsx,mdx}",
     "./index.ts",
+    // App package
+    "../app/app/**/*.{js,ts,jsx,tsx,mdx}",
+    "../app/components/**/*.{js,ts,jsx,tsx,mdx}",
+    "../app/lib/**/*.{js,ts,jsx,tsx,mdx}",
+    // Landing package
+    "../landing/app/**/*.{js,ts,jsx,tsx,mdx}",
+    "../landing/components/**/*.{js,ts,jsx,tsx,mdx}",
+    "../landing/lib/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
     extend: {
