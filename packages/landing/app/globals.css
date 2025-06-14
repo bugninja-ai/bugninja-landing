@@ -1,3 +1,17 @@
+@import url('https://fonts.googleapis.com/css2?family=Rethink+Sans:ital,wght@0,400..800;1,400..800&display=swap');
+
+.display-font {
+  font-family: 'Rethink Sans', sans-serif;
+  font-weight: 300;
+
+}
+
+.display-em {
+  font-family: 'Rethink Sans', sans-serif;
+  font-weight: 800;
+  font-style: italic;
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -55,5 +69,27 @@
   }
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+@layer components {
+  .cta-button {
+    @apply relative inline-flex items-center justify-center px-6 py-3 text-base font-medium transition-all duration-300;
+    @apply bg-primary-500 text-white hover:bg-primary-600;
+    @apply rounded-lg shadow-lg shadow-primary-500/20;
+    @apply hover:shadow-xl hover:shadow-primary-600/30 hover:-translate-y-0.5;
+    @apply focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 focus:ring-offset-background;
+    @apply disabled:opacity-50 disabled:pointer-events-none;
+  }
+
+  .cta-button::before {
+    @apply content-[''] absolute inset-0 rounded-lg;
+    @apply bg-gradient-to-r from-primary-500 to-primary-300;
+    @apply opacity-0 transition-opacity duration-300;
+    @apply -z-10;
+  }
+
+  .cta-button:hover::before {
+    @apply opacity-100;
   }
 } 

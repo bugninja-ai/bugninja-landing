@@ -1,16 +1,33 @@
 import { cn } from '@bugninja/shared-ui'
+import { PageHeader } from '@/components/page-header'
+import { Hero } from '@/components/hero'
+import { LogoTicker } from '@/components/logo-ticker'
+import { BentoGrid } from '@/components/bento-grid'
+import { Pricing } from '../components/pricing'
+import { AboutUs } from '@/components/about-us'
+import { Articles } from '../components/articles'
+import { Divider } from '@/components/divider'
+import { FAQ } from '@/components/faq'
+import { Footer } from '../components/footer'
 
 export default function Home() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center p-24">
-      <div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm">
-        <h1 className={cn("text-4xl font-bold text-center mb-8")}>
-          BugNinja Landing
-        </h1>
-        <p className="text-center text-muted-foreground">
-          Welcome to your landing page and blog. Ready for your components!
-        </p>
-      </div>
-    </main>
+    <div className="flex min-h-screen flex-col background text-foreground gap-0">
+      <PageHeader />
+      <Hero />
+      <Divider />
+      <LogoTicker />
+      <Divider />
+      <BentoGrid />
+      <Divider />
+      <Pricing />
+      <Divider />
+      <AboutUs />
+      <Divider />
+      <Articles />
+      <Divider />
+      <FAQ />
+      <Footer />
+    </div>
   )
 } 
