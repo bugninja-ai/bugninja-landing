@@ -2,14 +2,7 @@
 
 .display-font {
   font-family: 'Rethink Sans', sans-serif;
-  font-weight: 300;
-
-}
-
-.display-em {
-  font-family: 'Rethink Sans', sans-serif;
-  font-weight: 800;
-  font-style: italic;
+  font-weight: 600;
 }
 
 @tailwind base;
@@ -70,26 +63,82 @@
   body {
     @apply bg-background text-foreground;
   }
+  section[id] {
+    @apply scroll-mt-16;
+  }
 }
 
 @layer components {
   .cta-button {
     @apply relative inline-flex items-center justify-center px-6 py-3 text-base font-medium transition-all duration-300;
-    @apply bg-primary-500 text-white hover:bg-primary-600;
-    @apply rounded-lg shadow-lg shadow-primary-500/20;
-    @apply hover:shadow-xl hover:shadow-primary-600/30 hover:-translate-y-0.5;
+    @apply bg-primary-700 text-white hover:bg-primary-600;
+    @apply rounded-2xl shadow-lg shadow-primary-500/20;
+    @apply hover:shadow-xl hover:shadow-primary-800/30 hover:-translate-y-0.5;
     @apply focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 focus:ring-offset-background;
     @apply disabled:opacity-50 disabled:pointer-events-none;
   }
 
   .cta-button::before {
-    @apply content-[''] absolute inset-0 rounded-lg;
-    @apply bg-gradient-to-r from-primary-500 to-primary-300;
+    @apply content-[''] absolute inset-0 rounded-2xl;
+    @apply bg-gradient-to-r from-primary-700 to-primary-500;
     @apply opacity-0 transition-opacity duration-300;
     @apply -z-10;
   }
 
   .cta-button:hover::before {
     @apply opacity-100;
+  }
+
+  .cta-button-on-primary {
+    @apply relative inline-flex items-center justify-center px-6 py-3 text-base font-medium transition-all duration-300;
+    @apply bg-white text-gray-950 hover:bg-gray-100;
+    @apply rounded-2xl shadow-lg shadow-gray-500/20;
+    @apply hover:shadow-xl hover:shadow-gray-800/30 hover:-translate-y-0.5;
+    @apply focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 focus:ring-offset-background;
+    @apply disabled:opacity-50 disabled:pointer-events-none;
+  }
+
+  .cta-button-on-primary::before {
+    @apply content-[''] absolute inset-0 rounded-2xl;
+    @apply bg-gradient-to-r from-gray-100 to-gray-50;
+    @apply opacity-0 transition-opacity duration-300;
+    @apply -z-10;
+  }
+
+  .cta-button-on-primary:hover::before {
+    @apply opacity-100;
+  }
+
+  .secondary-button {
+    @apply relative inline-flex items-center justify-center px-6 py-3 text-base font-medium transition-all duration-300;
+    @apply bg-transparent text-foreground border border-border;
+    @apply rounded-2xl shadow-sm;
+    @apply hover:bg-gray-50 hover:border-primary-500;
+    @apply focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 focus:ring-offset-background;
+    @apply disabled:opacity-50 disabled:pointer-events-none;
+  }
+
+  .secondary-button::before {
+    @apply content-[''] absolute inset-0 rounded-lg;
+    @apply bg-gradient-to-r from-muted/50 to-gray-50;
+    @apply opacity-0 transition-opacity duration-300;
+    @apply -z-10;
+  }
+
+  .secondary-button:hover::before {
+    @apply opacity-100;
+  }
+}
+
+@layer utilities {
+  .border-b-3 {
+    border-bottom-width: 3px;
+  }
+
+  .hover-rotate-y {
+    transition: transform 0.2s;
+  }
+  .hover-rotate-y:hover {
+    transform: scale(1.05) rotateY(-20deg);
   }
 } 

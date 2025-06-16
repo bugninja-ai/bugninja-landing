@@ -1,88 +1,13 @@
 'use client'
 
-import React, { useState, useRef, useEffect } from 'react';
-import { Plus, Minus } from 'lucide-react';
+import React, { useRef, useEffect } from 'react';
+import { H2Wrapper } from './h2-wrapper';
+import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from '@bugninja/shared-ui/components/ui/accordion';
 import gsap from 'gsap';
-
-interface FAQItemProps {
-  question: string;
-  answer: string;
-  open: boolean;
-  onClick: () => void;
-}
-
-function FAQAccordion({ question, answer, open, onClick }: FAQItemProps) {
-  const contentRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const el = contentRef.current;
-    if (!el) return;
-    let ctx = gsap.context && gsap.context(() => {}, el);
-    if (open) {
-      // Set height to 0 first if not already
-      gsap.set(el, { height: 0, opacity: 0 });
-      // Animate to scrollHeight
-      gsap.to(el, {
-        height: el.scrollHeight,
-        opacity: 1,
-        duration: 0.4,
-        ease: 'power2.out',
-        onComplete: () => {
-          el.style.height = 'auto';
-        },
-      });
-    } else {
-      // Animate to height 0
-      gsap.to(el, {
-        height: 0,
-        opacity: 0,
-        duration: 0.3,
-        ease: 'power2.in',
-      });
-    }
-    return () => ctx && ctx.revert && ctx.revert();
-  }, [open]);
-
-  // Custom cursor: Eyes emoji on closed, default on open
-  // SVG: 32x32, circle with bg-muted/30, eyes emoji centered
-  const eyesCursorSvg = encodeURIComponent(`
-    <svg xmlns='http://www.w3.org/2000/svg' width='40' height='40'>
-      <circle cx='20' cy='20' r='20' fill='rgba(100,116,139,0.8)' />
-      <text x='20' y='23' font-size='18' text-anchor='middle' dominant-baseline='middle'>👀</text>
-    </svg>
-  `);
-  const buttonStyle = open
-    ? { cursor: 'default' }
-    : { cursor: `url("data:image/svg+xml;utf8,${eyesCursorSvg}") 16 16, pointer` };
-
-  return (
-    <div className="border-b border-muted py-8">
-      <button
-        className="w-full text-left flex justify-between items-center font-medium text-lg focus:outline-none"
-        onClick={onClick}
-        aria-expanded={open}
-        style={buttonStyle}
-      >
-        <span>{question}</span>
-        <span className="ml-2 text-primary">
-          {open ? <Minus size={20} /> : <Plus size={20} />}
-        </span>
-      </button>
-      <div
-        ref={contentRef}
-        style={{ height: open ? 'auto' : 0, overflow: 'hidden', opacity: open ? 1 : 0 }}
-        aria-hidden={!open}
-      >
-        <div className="mt-2 text-muted-foreground text-base">
-          {answer}
-        </div>
-      </div>
-    </div>
-  );
-}
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+gsap.registerPlugin(ScrollTrigger);
 
 export function FAQ() {
-  const [openIndex, setOpenIndex] = useState(0);
   const faqs = [
     {
       question: "What is BugNinja?",
@@ -105,22 +30,148 @@ export function FAQ() {
       answer: "Pro users get priority email and chat support. Free users can access our community resources and documentation.",
     },
   ];
+
+  // Create refs for each accordion content
+  const contentRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const hasAnimated = useRef<boolean[]>([]);
+  const sectionRef = useRef<HTMLElement>(null);
+  const itemRefs = useRef<(HTMLDivElement | null)[]>([]);
+
+  useEffect(() => {
+    // Handle hash navigation
+    const handleHashChange = () => {
+      if (window.location.hash === '#faq' && sectionRef.current) {
+        // Add a small delay to ensure the DOM is ready
+        setTimeout(() => {
+          sectionRef.current?.scrollIntoView({ behavior: 'smooth' });
+        }, 100);
+      }
+    };
+
+    // Check hash on mount
+    handleHashChange();
+
+    // Listen for hash changes
+    window.addEventListener('hashchange', handleHashChange);
+
+    // Initialize refs array and animation tracking
+    contentRefs.current = contentRefs.current.slice(0, faqs.length);
+    hasAnimated.current = new Array(faqs.length).fill(false);
+    itemRefs.current = itemRefs.current.slice(0, faqs.length);
+
+    // GSAP ScrollTrigger animation for AccordionItems
+    if (itemRefs.current.length) {
+      gsap.set(itemRefs.current, { autoAlpha: 0, y: 40 });
+      gsap.to(itemRefs.current, {
+        autoAlpha: 1,
+        y: 0,
+        duration: 1,
+        stagger: 0.1,
+        ease: 'power2.out',
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: 'top 80%',
+          once: true,
+        },
+      });
+    }
+
+    // Create GSAP context for content animation
+    const ctx = gsap.context(() => {
+      // Set up animation for each content
+      contentRefs.current.forEach((content, index) => {
+        if (!content) return;
+
+        // Find the trigger element (the question)
+        const trigger = content.previousElementSibling;
+        if (!trigger) return;
+
+        // Create timeline for this item
+        const tl = gsap.timeline({ paused: true });
+        
+        // Initial state - only set opacity 0 if it's not the default open item
+        if (index !== 0) {
+          gsap.set(content, { opacity: 0 });
+        }
+
+        // Animation
+        tl.to(content, {
+          opacity: 1,
+          duration: 0.2,
+          ease: "power2.out"
+        });
+
+        // Watch for state changes
+        const observer = new MutationObserver((mutations) => {
+          mutations.forEach((mutation) => {
+            if (mutation.attributeName === 'data-state') {
+              const state = trigger.getAttribute('data-state');
+              
+              // Skip animation for the first item on initial load
+              if (index === 0 && !hasAnimated.current[0]) {
+                if (state === 'open') {
+                  gsap.set(content, { opacity: 1 });
+                  hasAnimated.current[0] = true;
+                }
+                return;
+              }
+
+              // For all other interactions, animate normally
+              if (state === 'open') {
+                tl.play();
+                hasAnimated.current[index] = true;
+              } else {
+                tl.reverse();
+              }
+            }
+          });
+        });
+
+        observer.observe(trigger, { attributes: true });
+      });
+    });
+
+    return () => {
+      window.removeEventListener('hashchange', handleHashChange);
+      ctx.revert();
+    };
+  }, [faqs.length]);
+
   return (
-    <section className="container mx-auto py-20 px-4 border-l border-r border-white border-opacity-[0.05]">
-      <div className="flex flex-row items-start w-full gap-1">
-        <div className="w-1/2 flex">
-          <h2 className="text-3xl font-bold text-left">Frequently Asked Questions</h2>
+    <section 
+      ref={sectionRef}
+      id="faq" 
+      className="container mx-auto px-4 border-l border-r py-20 scroll-mt-24"
+    >
+      <div className="flex flex-col xl:flex-row xl:items-start lg:justify-center xl:w-3/4 gap-1 mx-auto">
+        <div className="w-full xl:w-1/2 py-4 flex md:justify-center xl:block">
+          <H2Wrapper>
+            <h2 className="display-font text-3xl font-bold text-center xl:text-left">Frequently Asked Questions</h2>
+          </H2Wrapper>
         </div>
-        <div className="w-1/2 divide-y divide-muted">
-          {faqs.map((faq, idx) => (
-            <FAQAccordion
-              key={faq.question}
-              question={faq.question}
-              answer={faq.answer}
-              open={openIndex === idx}
-              onClick={() => setOpenIndex(idx)}
-            />
-          ))}
+        <div className="w-full xl:w-1/2">
+          <Accordion type="single" collapsible className="w-full" defaultValue="item-0">
+            {faqs.map((faq, idx) => (
+              <AccordionItem 
+                key={idx} 
+                value={`item-${idx}`}
+                className="border-b border-border py-3"
+                ref={el => { itemRefs.current[idx] = el; }}
+              >
+                <AccordionTrigger className="text-lg font-medium text-left">
+                  {faq.question}
+                </AccordionTrigger>
+                <AccordionContent 
+                  ref={(el: HTMLDivElement | null) => {
+                    contentRefs.current[idx] = el;
+                  }}
+                  className="text-muted-foreground text-base text-left"
+                >
+                  {faq.answer}
+                </AccordionContent>
+              </AccordionItem>
+            ))}
+          </Accordion>
         </div>
       </div>
     </section>

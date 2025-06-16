@@ -1,8 +1,16 @@
 'use client'
 
+import React from 'react'
 import { useEffect, useRef } from 'react'
 import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import Image from 'next/image'
+import { H2Wrapper } from './h2-wrapper'
+
+// Register ScrollTrigger plugin
+if (typeof window !== 'undefined') {
+  gsap.registerPlugin(ScrollTrigger)
+}
 
 const logos = [
   { src: '/logos/logo1.svg', alt: 'Company 1' },
@@ -19,6 +27,9 @@ const logos = [
 export function LogoTicker() {
   const containerRef = useRef<HTMLDivElement>(null)
   const wrapperRef = useRef<HTMLDivElement>(null)
+  const animationRef = useRef<gsap.core.Timeline | null>(null)
+  const isScrollingRef = useRef(false)
+  const scrollTimeoutRef = useRef<NodeJS.Timeout>()
 
   useEffect(() => {
     if (!containerRef.current || !wrapperRef.current) return
@@ -33,7 +44,7 @@ export function LogoTicker() {
     // Calculate the total width of one set of logos
     const totalWidth = wrapper.offsetWidth
 
-    // Create the animation with faster duration
+    // Create the animation
     const tl = gsap.timeline({
       repeat: -1,
       defaults: { ease: 'none' },
@@ -41,8 +52,33 @@ export function LogoTicker() {
 
     tl.to([wrapper, clone], {
       x: -totalWidth,
-      duration: 20, // Set to 2 seconds for very fast scrolling
+      duration: 40,
     })
+
+    animationRef.current = tl
+
+    // Set up scroll detection
+    const handleScroll = () => {
+      if (!isScrollingRef.current) {
+        isScrollingRef.current = true
+        // Speed up animation while scrolling
+        tl.timeScale(1.5) // This makes the animation twice as fast (40s -> 20s)
+      }
+
+      // Clear any existing timeout
+      if (scrollTimeoutRef.current) {
+        clearTimeout(scrollTimeoutRef.current)
+      }
+
+      // Set a timeout to detect when scrolling stops
+      scrollTimeoutRef.current = setTimeout(() => {
+        isScrollingRef.current = false
+        // Return to normal speed
+        tl.timeScale(1)
+      }, 150) // Wait 150ms after last scroll event
+    }
+
+    window.addEventListener('scroll', handleScroll, { passive: true })
 
     // Cleanup
     return () => {
@@ -50,47 +86,53 @@ export function LogoTicker() {
       if (clone.parentNode) {
         clone.parentNode.removeChild(clone)
       }
+      window.removeEventListener('scroll', handleScroll)
+      if (scrollTimeoutRef.current) {
+        clearTimeout(scrollTimeoutRef.current)
+      }
     }
   }, [])
 
   return (
-    <div className="container mx-auto my-0 py-20 w-full px-4 border-l border-r border-white border-opacity-[0.05]">
-        <p className="text-center text-sm font-medium text-muted-foreground">
-          Easily integrate with your existing testing framework
-        </p>
-    <div className="relative w-full overflow-hidden py-12">
-      {/* Left fade gradient */}
-      <div className="absolute left-0 top-0 z-10 h-full w-32 bg-gradient-to-r from-background to-transparent" />
-      
-      {/* Right fade gradient */}
-      <div className="absolute right-0 top-0 z-10 h-full w-32 bg-gradient-to-l from-background to-transparent" />
+    <div className="container mx-auto my-0 py-20 w-full px-4 border-l border-r">
+      <div className="flex justify-center mb-12">
+        <H2Wrapper>
+          <h2 className="display-font text-3xl font-bold">Trusted by</h2>
+        </H2Wrapper>
+      </div>
+      <div className="relative w-full overflow-hidden py-12">
+        {/* Left fade gradient */}
+        <div className="absolute left-0 top-0 z-10 h-full w-32 bg-gradient-to-r from-background to-transparent" />
+        
+        {/* Right fade gradient */}
+        <div className="absolute right-0 top-0 z-10 h-full w-32 bg-gradient-to-l from-background to-transparent" />
 
-      {/* Logo container */}
-      <div 
-        ref={containerRef}
-        className="flex w-full"
-      >
+        {/* Logo container */}
         <div 
-          ref={wrapperRef}
-          className="flex items-center gap-12 px-6"
+          ref={containerRef}
+          className="flex w-full"
         >
-          {logos.map((logo, index) => (
-            <div
-              key={index}
-              className="relative h-12 w-[150px] flex-shrink-0 opacity-60 grayscale transition-opacity hover:opacity-100 hover:grayscale-0"
-            >
-              <Image
-                src={logo.src}
-                alt={logo.alt}
-                fill
-                className="object-contain"
-                priority={index < 5}
-              />
-            </div>
-          ))}
+          <div 
+            ref={wrapperRef}
+            className="flex items-center gap-12 px-6"
+          >
+            {logos.map((logo, index) => (
+              <div
+                key={index}
+                className="relative h-12 w-[150px] flex-shrink-0 opacity-60 grayscale transition-opacity hover:opacity-100 hover:grayscale-0"
+              >
+                <Image
+                  src={logo.src}
+                  alt={logo.alt}
+                  fill
+                  className="object-contain"
+                  priority={index < 5}
+                />
+              </div>
+            ))}
+          </div>
         </div>
       </div>
-    </div>
     </div>
   )
 } 

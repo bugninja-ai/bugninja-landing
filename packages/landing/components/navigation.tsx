@@ -1,45 +1,72 @@
 'use client'
 
 import { cn } from '@bugninja/shared-ui'
-import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-
-interface NavigationProps {
-  className?: string
-}
+import Link from 'next/link'
 
 const navigationItems = [
-  { name: 'Features', href: '/features' },
-  { name: 'Pricing', href: '/pricing' },
-  { name: 'Blog', href: '/blog' },
-  { name: 'About', href: '/about' },
+  { name: 'Features', href: '#features' },
+  { name: 'Pricing', href: '#pricing' },
+  { name: 'About', href: '#about' },
+  { name: 'Blog', href: '#blog' },
+  { name: 'FAQ', href: '#faq' },
 ]
 
-export function Navigation({ className }: NavigationProps) {
+interface NavigationProps {
+  isVertical?: boolean
+  className?: string
+  onClick?: () => void
+}
+
+export function Navigation({ isVertical = false, className, onClick }: NavigationProps) {
   const pathname = usePathname()
-  const isVertical = className?.includes('flex-col')
+  const isHomePage = pathname === '/'
+
+  const handleClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    // If we're not on the home page, let the default link behavior work
+    if (!isHomePage) return
+
+    e.preventDefault()
+    const targetId = href.replace('#', '')
+    const element = document.getElementById(targetId)
+    
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' })
+      // Update URL without triggering scroll
+      window.history.pushState(null, '', href)
+    }
+    
+    // Call the parent onClick handler if provided (for overlay)
+    onClick?.()
+  }
 
   return (
     <nav className={cn(
-      "flex items-center gap-6",
-      isVertical ? "w-full" : "justify-center",
+      "flex gap-6",
+      isVertical ? "flex-col" : "flex-row",
       className
     )}>
-      {navigationItems.map((item) => (
-        <Link
-          key={item.href}
-          href={item.href}
-          className={cn(
-            "text-sm font-medium transition-colors hover:text-primary",
-            pathname === item.href
-              ? "text-foreground"
-              : "text-muted-foreground",
-            isVertical ? "w-full py-2 text-center" : ""
-          )}
-        >
-          {item.name}
-        </Link>
-      ))}
+      {navigationItems.map((item) => {
+        // If we're not on the home page, prepend the home page path
+        const fullHref = isHomePage ? item.href : `/${item.href}`
+        
+        return (
+          <Link
+            key={item.href}
+            href={fullHref}
+            onClick={(e) => handleClick(e, item.href)}
+            className={cn(
+              "text-sm font-medium transition-colors hover:text-primary-800 cursor-pointer",
+              pathname === item.href
+                ? "text-foreground"
+                : "text-muted-foreground",
+              isVertical ? "w-full py-2 text-center" : ""
+            )}
+          >
+            {item.name}
+          </Link>
+        )
+      })}
     </nav>
   )
 } 

@@ -2,9 +2,10 @@
 
 import { cn } from '@bugninja/shared-ui'
 import Link from 'next/link'
+import Image from 'next/image'
 import { Button } from '@bugninja/shared-ui/components/ui/button'
 import { Navigation } from './navigation'
-import { Menu } from 'lucide-react'
+import { Menu, X } from 'lucide-react'
 import { useState } from 'react'
 import { NavigationOverlay } from './navigation-overlay'
 
@@ -17,87 +18,109 @@ export function PageHeader({ className }: PageHeaderProps) {
 
   return (
     <div className="sticky top-0 z-50">
-    <header className={cn(
-      "w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60",
-      className
-    )}>
-      {/* Desktop container */}
-      <div className="hidden lg:block">
-        <div className="container mx-auto flex h-16 items-center px-4 border-l border-r border-white border-opacity-[0.05]">
-          {/* Logo */}
-          <div className="w-[200px] flex-shrink-0">
-            <Link href="/" className="flex items-center">
-              <div className="h-8 w-8 rounded-md bg-primary/10 flex items-center justify-center">
-                <span className="text-primary font-semibold">BN</span>
-              </div>
-            </Link>
-          </div>
+      <header className={cn(
+        "w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60",
+        className
+      )}>
+        {/* Desktop container */}
+        <div className="hidden lg:block">
+          <div className="container mx-auto flex h-16 items-center px-4 border-l border-r">
+            {/* Logo */}
+            <div className="w-[200px] flex-shrink-0">
+              <Link href="/" className="flex items-center">
+                <Image
+                  src="/bugninja.svg"
+                  alt="BugNinja Logo"
+                  width={110}
+                  height={28}
+                  className="h-8 w-auto"
+                  priority
+                />
+              </Link>
+            </div>
 
-          {/* Center section - Navigation */}
-          <div className="flex-1 flex justify-center">
-            <div className="w-[400px] flex justify-center">
-              <Navigation />
+            {/* Center section - Navigation */}
+            <div className="flex-1 flex justify-center">
+              <div className="w-[400px] flex justify-center">
+                <Navigation />
+              </div>
+            </div>
+
+            {/* Right section - Action Buttons */}
+            <div className="w-[200px] flex-shrink-0 flex items-center justify-end gap-3">
+              <Button variant="ghost" size="default" className="whitespace-nowrap" asChild>
+                <Link href="/demo">
+                  Book a demo
+                </Link>
+              </Button>
+              <Button size="default" className="whitespace-nowrap" asChild>
+                <Link href="/auth">
+                  Log in or register
+                </Link>
+              </Button>
             </div>
           </div>
+        </div>
 
-          {/* Right section - Action Buttons */}
-          <div className="w-[200px] flex-shrink-0 flex items-center justify-end gap-3">
-            <Button variant="ghost" size="sm" className="whitespace-nowrap" asChild>
-              <Link href="/auth">
-                Log in or register
+        {/* Tablet and Mobile container */}
+        <div className="lg:hidden">
+          <div className="flex h-16 items-center px-6">
+            {/* Left section - Hamburger and Logo */}
+            <div className="flex items-center gap-4">
+              {/* Mobile Menu Button */}
+              <Button 
+                variant="ghost" 
+                size="icon"
+                onClick={() => setIsOpen(!isOpen)}
+                className="relative h-8 w-8 transition-colors hover:bg-accent/10"
+              >
+                <Menu 
+                  className={cn(
+                    "h-5 w-5 absolute transition-all duration-200",
+                    isOpen ? "opacity-0 rotate-90 scale-0" : "opacity-100 rotate-0 scale-100"
+                  )} 
+                />
+                <X 
+                  className={cn(
+                    "h-5 w-5 absolute transition-all duration-200",
+                    isOpen ? "opacity-100 rotate-0 scale-100" : "opacity-0 -rotate-90 scale-0"
+                  )} 
+                />
+                <span className="sr-only">Toggle menu</span>
+              </Button>
+
+              {/* Logo */}
+              <Link href="/" className="flex items-center">
+                <Image
+                  src="/bugninja.svg"
+                  alt="BugNinja Logo"
+                  width={110}
+                  height={28}
+                  className="h-8 w-auto"
+                  priority
+                />
               </Link>
-            </Button>
-            <Button size="sm" className="whitespace-nowrap" asChild>
-              <Link href="/demo">
-                Book a demo
-              </Link>
-            </Button>
+            </div>
+
+            {/* Right section - Action Buttons (tablet only) */}
+            <div className="hidden sm:flex flex-1 items-center justify-end gap-3">
+              <Button variant="ghost" size="default" className="whitespace-nowrap" asChild>
+                <Link href="/demo">
+                  Book a demo
+                </Link>
+              </Button>
+              <Button size="default" className="whitespace-nowrap" asChild>
+                <Link href="/auth">
+                  Log in or register
+                </Link>
+              </Button>
+            </div>
           </div>
         </div>
-      </div>
 
-      {/* Tablet and Mobile container */}
-      <div className="lg:hidden">
-        <div className="flex h-16 items-center px-6">
-          {/* Left section - Hamburger and Logo */}
-          <div className="flex items-center gap-4">
-            {/* Mobile Menu Button */}
-            <Button 
-              variant="ghost" 
-              size="icon"
-              onClick={() => setIsOpen(true)}
-            >
-              <Menu className="h-5 w-5" />
-              <span className="sr-only">Toggle menu</span>
-            </Button>
-
-            {/* Logo */}
-            <Link href="/" className="flex items-center">
-              <div className="h-8 w-8 rounded-md bg-primary/10 flex items-center justify-center">
-                <span className="text-primary font-semibold">BN</span>
-              </div>
-            </Link>
-          </div>
-
-          {/* Right section - Action Buttons (tablet only) */}
-          <div className="hidden sm:flex flex-1 items-center justify-end gap-3">
-            <Button variant="ghost" size="sm" className="whitespace-nowrap" asChild>
-              <Link href="/auth">
-                Log in or register
-              </Link>
-            </Button>
-            <Button size="sm" className="whitespace-nowrap" asChild>
-              <Link href="/demo">
-                Book a demo
-              </Link>
-            </Button>
-          </div>
-        </div>
-      </div>
-
-      {/* Navigation Overlay */}
-      <NavigationOverlay isOpen={isOpen} onOpenChange={setIsOpen} />
-    </header>
+        {/* Navigation Overlay */}
+        <NavigationOverlay isOpen={isOpen} onOpenChange={setIsOpen} />
+      </header>
     </div>
   )
 } 

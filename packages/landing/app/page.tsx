@@ -1,32 +1,33 @@
-import { cn } from '@bugninja/shared-ui'
 import { PageHeader } from '@/components/page-header'
 import { Hero } from '@/components/hero'
-import { LogoTicker } from '@/components/logo-ticker'
-import { BentoGrid } from '@/components/bento-grid'
-import { Pricing } from '../components/pricing'
 import { AboutUs } from '@/components/about-us'
-import { Articles } from '../components/articles'
-import { Divider } from '@/components/divider'
+import { Articles } from '@/components/articles'
 import { FAQ } from '@/components/faq'
 import { Footer } from '../components/footer'
+import { CTASection } from '@/components/cta-section'
+import { SectionFeatures } from '@/components/section-features'
+import { Divider } from '@/components/divider'
+import { Pricing } from '@/components/pricing'
 
 export default function Home() {
   return (
     <div className="flex min-h-screen flex-col background text-foreground gap-0">
       <PageHeader />
-      <Hero />
-      <Divider />
-      <LogoTicker />
-      <Divider />
-      <BentoGrid />
-      <Divider />
-      <Pricing />
-      <Divider />
-      <AboutUs />
-      <Divider />
-      <Articles />
-      <Divider />
-      <FAQ />
+      <main className="flex-1">
+        <Hero />
+        <Divider />
+        <SectionFeatures />
+        <Divider />
+        <Pricing />
+        <Divider />
+        <AboutUs />
+        <Divider />
+        <Articles />
+        <Divider />
+        <FAQ />
+        <Divider />
+        <CTASection />
+      </main>
       <Footer />
     </div>
   )
