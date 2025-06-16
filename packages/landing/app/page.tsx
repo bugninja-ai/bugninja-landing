@@ -8,6 +8,7 @@ import { CTASection } from '@/components/cta-section'
 import { SectionFeatures } from '@/components/section-features'
 import { Divider } from '@/components/divider'
 import { Pricing } from '@/components/pricing'
+import { LogoTicker } from '@/components/logo-ticker'
 
 export default function Home() {
   return (
@@ -17,6 +18,8 @@ export default function Home() {
         <Hero />
         <Divider />
         <SectionFeatures />
+        <Divider />
+        <LogoTicker />
         <Divider />
         <Pricing />
         <Divider />
