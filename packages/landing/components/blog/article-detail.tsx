@@ -16,7 +16,7 @@ interface ArticleDetailProps {
 
 export function ArticleDetail({ article, className }: ArticleDetailProps) {
   return (
-    <article className={cn("container mx-auto py-20 px-4 border-l border-r border-border", className)}>
+    <article className={cn("container mx-auto py-20 px-4 border-l border-r border-border border-dashed", className)}>
       {/* Header */}
       <div className="max-w-3xl mx-auto mb-12">
         <h1 className="display-font text-4xl md:text-5xl font-bold mb-6">{article.title}</h1>

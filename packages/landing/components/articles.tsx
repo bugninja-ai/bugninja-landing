@@ -50,7 +50,7 @@ export function Articles() {
   }, []);
 
   return (
-    <section className="container mx-auto py-20 px-4 border-l border-r scroll-mt-32" id="blog">
+    <section className="container mx-auto py-20 px-4 border-l border-r border-dashed scroll-mt-32" id="blog">
       <div className="flex justify-center mb-12">
         <H2Wrapper>
           <h2 className="display-font text-3xl font-bold">Read about automated testing</h2>

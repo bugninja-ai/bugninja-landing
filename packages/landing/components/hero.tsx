@@ -27,7 +27,7 @@ export function Hero() {
 
   return (
     <div className="container mx-auto">
-      <div className="px-4 md:py-18 py-10 sm:pt-4 border-l border-r">
+      <div className="px-4 md:py-18 py-10 sm:pt-4 border-l border-r border-dashed">
         <div className="flex flex-col items-center mt-20">
           <div className="flex flex-col items-center text-center max-w-3xl">
             <Image

@@ -31,7 +31,7 @@ export function Pricing() {
   }, []);
 
   return (
-    <section className="container mx-auto py-20 px-4 border-l border-r bg-muted/50" id="pricing">
+    <section className="container mx-auto py-20 px-4 border-l border-r border-dashed bg-muted/50" id="pricing">
       <div className="flex justify-center mb-12">
         <H2Wrapper>
           <h2 className="text-3xl font-bold">Pricing</h2>
@@ -48,7 +48,9 @@ export function Pricing() {
             <li className="flex items-center justify-center gap-2"><Check className="h-4 w-4" /> Community support</li>
             <li className="flex items-center justify-center gap-2"><Check className="h-4 w-4" /> Email notifications</li>
           </ul>
-          <SecondaryButton>Get Started</SecondaryButton>
+          <div className="flex-1 flex items-end">
+            <SecondaryButton className="h-14">Get Started</SecondaryButton>
+          </div>
         </div>
         {/* Paid Plan */}
         <div ref={paidRef} className="flex flex-col bg-primary-700 text-primary-foreground rounded-2xl p-8 items-center shadow-lg">
@@ -61,7 +63,9 @@ export function Pricing() {
             <li className="flex items-center justify-center gap-2"><Check className="h-4 w-4" /> Team collaboration</li>
             <li className="flex items-center justify-center gap-2"><Check className="h-4 w-4" /> Custom integrations</li>
           </ul>
-          <CTAButtonOnPrimary>Subcribe to PRO</CTAButtonOnPrimary>
+          <div className="flex-1 w-full flex items-end">
+            <CTAButtonOnPrimary className="w-full h-14">Subcribe to PRO</CTAButtonOnPrimary>
+          </div>
         </div>
       </div>
     </section>

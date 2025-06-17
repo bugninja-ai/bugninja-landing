@@ -19,12 +19,12 @@ export function PageHeader({ className }: PageHeaderProps) {
   return (
     <div className="sticky top-0 z-50">
       <header className={cn(
-        "w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60",
+        "w-full border-b border-border border-dashed bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60",
         className
       )}>
         {/* Desktop container */}
         <div className="hidden lg:block">
-          <div className="container mx-auto flex h-16 items-center px-4 border-l border-r">
+          <div className="container mx-auto flex h-16 items-center px-4 border-l border-r border-dashed">
             {/* Logo */}
             <div className="w-[200px] flex-shrink-0">
               <Link href="/" className="flex items-center">

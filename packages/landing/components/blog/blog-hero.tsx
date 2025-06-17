@@ -18,7 +18,7 @@ interface BlogHeroProps {
 
 export function BlogHero({ article, className }: BlogHeroProps) {
   return (
-    <section className={cn("container mx-auto py-20 px-4 border-l border-r border-border", className)}>
+    <section className={cn("container mx-auto py-20 px-4 border-l border-r border-border border-dashed", className)}>
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
         {/* Content */}
         <div className="space-y-6">

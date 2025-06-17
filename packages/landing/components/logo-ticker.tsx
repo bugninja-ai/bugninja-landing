@@ -13,15 +13,12 @@ if (typeof window !== 'undefined') {
 }
 
 const logos = [
-  { src: '/logos/logo1.svg', alt: 'Company 1' },
-  { src: '/logos/logo2.svg', alt: 'Company 2' },
-  { src: '/logos/logo3.svg', alt: 'Company 3' },
-  { src: '/logos/logo4.svg', alt: 'Company 4' },
-  { src: '/logos/logo5.svg', alt: 'Company 5' },
-  { src: '/logos/logo6.svg', alt: 'Company 6' },
-  { src: '/logos/logo7.svg', alt: 'Company 7' },
-  { src: '/logos/logo8.svg', alt: 'Company 8' },
-  { src: '/logos/logo9.svg', alt: 'Company 9' },
+  { src: '/partner1.png', alt: 'Partner 1' },
+  { src: '/partner2.png', alt: 'Partner 2' },
+  { src: '/partner3.png', alt: 'Partner 3' },
+  { src: '/partner4.png', alt: 'Partner 4' },
+  { src: '/partner5.png', alt: 'Partner 5' },
+  { src: '/partner6.png', alt: 'Partner 6' },
 ]
 
 export function LogoTicker() {
@@ -94,7 +91,7 @@ export function LogoTicker() {
   }, [])
 
   return (
-    <div className="container mx-auto my-0 py-20 w-full px-4 border-l border-r">
+    <div className="container mx-auto my-0 py-20 w-full px-4 border-l border-r border-dashed">
       <div className="flex justify-center mb-12">
         <H2Wrapper>
           <h2 className="display-font text-3xl font-bold">Trusted by</h2>

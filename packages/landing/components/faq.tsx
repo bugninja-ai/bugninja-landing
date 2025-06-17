@@ -141,7 +141,7 @@ export function FAQ() {
     <section 
       ref={sectionRef}
       id="faq" 
-      className="container mx-auto px-4 border-l border-r py-20 scroll-mt-24"
+      className="container mx-auto px-4 border-l border-r border-dashed py-20 scroll-mt-24"
     >
       <div className="flex flex-col xl:flex-row xl:items-start lg:justify-center xl:w-3/4 gap-1 mx-auto">
         <div className="w-full xl:w-1/2 py-4 flex md:justify-center xl:block">

@@ -3,7 +3,7 @@ import { H2Wrapper } from './h2-wrapper';
 
 export function AboutUs() {
   return (
-    <section className="container mx-auto py-20 px-4 border-l border-r scroll-mt-20" id="about">
+    <section className="container mx-auto py-20 px-4 border-l border-r border-dashed scroll-mt-20" id="about">
       <div className="flex justify-center mb-8">
         <H2Wrapper>
           <h2 className="display-font text-3xl font-bold">About BugNinja</h2>
