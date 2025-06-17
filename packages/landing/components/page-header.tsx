@@ -6,7 +6,7 @@ import Image from 'next/image'
 import { Button } from '@bugninja/shared-ui/components/ui/button'
 import { Navigation } from './navigation'
 import { Menu, X } from 'lucide-react'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { NavigationOverlay } from './navigation-overlay'
 
 interface PageHeaderProps {
@@ -15,11 +15,22 @@ interface PageHeaderProps {
 
 export function PageHeader({ className }: PageHeaderProps) {
   const [isOpen, setIsOpen] = useState(false)
+  const [isScrolled, setIsScrolled] = useState(false)
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 0)
+    }
+
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
 
   return (
     <div className="sticky top-0 z-50">
       <header className={cn(
-        "w-full border-b border-border border-dashed bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60",
+        "w-full border-b border-border border-dashed bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 transition-colors duration-200",
+        isScrolled && "bg-primary-100/40 dark:bg-primary-100/20",
         className
       )}>
         {/* Desktop container */}

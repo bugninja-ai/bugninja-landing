@@ -28,7 +28,7 @@ services:
       - NEXT_TELEMETRY_DISABLED=1
       - WATCHPACK_POLLING=true
       - NODE_OPTIONS=--no-deprecation
-    command: sh -c "npm install --no-package-lock && npm run dev:landing"
+    command: sh -c "npm run dev:landing"
     networks:
       - webapp-network
     restart: unless-stopped
