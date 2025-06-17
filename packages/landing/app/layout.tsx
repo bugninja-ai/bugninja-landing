@@ -7,6 +7,11 @@ const inter = Inter({ subsets: ['latin'] })
 export const metadata: Metadata = {
   title: 'BugNinja - AI-Powered Debugging Assistant',
   description: 'Debug smarter, not harder with BugNinja. Your AI-powered debugging assistant that helps you find and fix bugs faster.',
+  themeColor: '#6c66ee',
+  other: {
+    'theme-color': '#6c66ee',
+    'msapplication-TileColor': '#6c66ee',
+  },
 }
 
 export default function RootLayout({
