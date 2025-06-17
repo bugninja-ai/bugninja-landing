@@ -9,6 +9,7 @@ import { SectionFeatures } from '@/components/section-features'
 import { Divider } from '@/components/divider'
 import { Pricing } from '@/components/pricing'
 import { LogoTicker } from '@/components/logo-ticker'
+import { IntegrationsTicker } from '@/components/integrations-ticker'
 
 export default function Home() {
   return (
@@ -20,6 +21,8 @@ export default function Home() {
         <LogoTicker />
         <Divider />
         <SectionFeatures />
+        <Divider />
+        <IntegrationsTicker />
         <Divider />
         <Pricing />
         <Divider />

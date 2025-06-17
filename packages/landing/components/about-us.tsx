@@ -6,11 +6,11 @@ export function AboutUs() {
     <section className="container mx-auto py-20 px-4 border-l border-r border-dashed scroll-mt-20" id="about">
       <div className="flex justify-center mb-8">
         <H2Wrapper>
-          <h2 className="display-font text-3xl font-bold">About BugNinja</h2>
+          <h2 className="display-font text-3xl font-bold">Why Bugninja works?</h2>
         </H2Wrapper>
       </div>
       <p className="text-center text-muted-foreground max-w-2xl mx-auto">
-        BugNinja is a passionate team of engineers and innovators dedicated to making software testing effortless and intelligent. Our mission is to empower developers and teams to deliver flawless products faster, with the help of cutting-edge AI and automation. We believe in transparency, collaboration, and building tools that truly make a difference.
+        Instead of generating fragile test scripts that break with every UI change, our AI intelligently navigates your product like a real user and creates test cases based on actual user behavior. This approach eliminates the constant maintenance nightmare while delivering more reliable testing that adapts to your application.
       </p>
     </section>
   );
