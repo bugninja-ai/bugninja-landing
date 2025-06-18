@@ -21,7 +21,8 @@ const features = [
     description: (<>
       Create <span className="bg-primary-500 text-white dark:bg-primary-500 dark:text-white px-1 rounded">smart test casess</span> for your webapp automatically, finding bugs and edge case that humans usually miss.
     </>),
-    imageAspectRatio: '16:9' as const
+    imageAspectRatio: '16:9' as const,
+    imageSrc: '/automated-test-case.jpg'
   },
   {
     title: "Fully automatic AI navigation",
@@ -29,7 +30,7 @@ const features = [
       Bugninja <span className="bg-primary-500 text-white dark:bg-primary-500 dark:text-white px-1 rounded">explores your website like a real user</span>, automatically discovering all pages, forms, and interactive elements without any setup.
     </>),
     imageAspectRatio: '16:9' as const,
-    imageSrc: '/feature3.png'
+    imageSrc: '/ai-navigation.jpg'
   },
   {
     title: "Complete E2E Testing",
@@ -37,14 +38,15 @@ const features = [
       <span className="bg-primary-500 text-white dark:bg-primary-500 dark:text-white px-1 rounded">Test entire user workflowss</span>  from login to checkout automatically, ensuring critical business processework flawlessly every time.
     </>),
     imageAspectRatio: '16:9' as const,
-    imageSrc: '/feature4.png'
+    imageSrc: '/e2e-testing.jpg'
   },
   {
     title: "Find edge cases",
     description: (<>
       Bugninja can  <span className="bg-primary-500 text-white dark:bg-primary-500 dark:text-white px-1 rounded">find the most annoying </span> edge-cases that your users would see but never happen in a development environment.
     </>),
-    imageAspectRatio: '16:9' as const
+    imageAspectRatio: '16:9' as const,
+    imageSrc: '/edge-case.jpg'
   }
 ];
 

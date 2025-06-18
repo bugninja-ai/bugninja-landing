@@ -47,7 +47,7 @@ export function BlogHero({ article }: BlogHeroProps) {
           </p>
           <Link
             href={`/blog/${attributes.slug}`}
-            className="inline-block rounded-md bg-primary-500 px-6 py-3 text-base font-semibold text-white shadow-sm hover:bg-primary-600 transition-colors"
+            className="inline-block rounded-md bg-primary-500 px-6 py-3 text-base font-semibold text-white shadow-md hover:bg-primary-600 transition-colors"
           >
             Read more
           </Link>
