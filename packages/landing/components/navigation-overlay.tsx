@@ -19,6 +19,9 @@ export function NavigationOverlay({ isOpen, onOpenChange }: NavigationOverlayPro
 
   useEffect(() => {
     const ctx = gsap.context(() => {
+      // Check if refs are available
+      if (!overlayRef.current || !contentRef.current) return
+
       // Initial state
       gsap.set(overlayRef.current, { opacity: 0, x: '-100%' })
       gsap.set(contentRef.current, { x: '-100%' })
@@ -43,6 +46,8 @@ export function NavigationOverlay({ isOpen, onOpenChange }: NavigationOverlayPro
   }, [])
 
   useEffect(() => {
+    if (!overlayRef.current || !contentRef.current) return
+
     if (isOpen) {
       gsap.to(overlayRef.current, {
         opacity: 1,

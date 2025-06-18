@@ -8,7 +8,7 @@ const navigationItems = [
   { name: 'Features', href: '#features' },
   { name: 'Pricing', href: '#pricing' },
   { name: 'About', href: '#about' },
-  { name: 'Blog', href: '#blog' },
+  { name: 'Blog', href: '/blog' },
   { name: 'FAQ', href: '#faq' },
 ]
 
@@ -23,6 +23,12 @@ export function Navigation({ isVertical = false, className, onClick }: Navigatio
   const isHomePage = pathname === '/'
 
   const handleClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    // If it's a page route (doesn't start with #), let default navigation work
+    if (!href.startsWith('#')) {
+      onClick?.()
+      return
+    }
+
     // If we're not on the home page, let the default link behavior work
     if (!isHomePage) return
 
@@ -47,8 +53,10 @@ export function Navigation({ isVertical = false, className, onClick }: Navigatio
       className
     )}>
       {navigationItems.map((item) => {
-        // If we're not on the home page, prepend the home page path
-        const fullHref = isHomePage ? item.href : `/${item.href}`
+        // For page routes (like /blog), use as-is. For section anchors, handle based on current page
+        const fullHref = item.href.startsWith('#') 
+          ? (isHomePage ? item.href : `/${item.href}`)
+          : item.href
         
         return (
           <Link

@@ -41,7 +41,7 @@ export function PageHeader({ className }: PageHeaderProps) {
               <Link href="/" className="flex items-center">
                 <Image
                   src="/bugninja.svg"
-                  alt="BugNinja Logo"
+                  alt="Bugninja Logo"
                   width={110}
                   height={28}
                   className="h-8 w-auto"
@@ -60,7 +60,7 @@ export function PageHeader({ className }: PageHeaderProps) {
             {/* Right section - Action Buttons */}
             <div className="w-[200px] flex-shrink-0 flex items-center justify-end gap-3">
               <Button variant="ghost" size="default" className="whitespace-nowrap" asChild>
-                <Link href="/demo">
+                <Link href="/book-meeting">
                   Book a demo
                 </Link>
               </Button>
@@ -104,7 +104,7 @@ export function PageHeader({ className }: PageHeaderProps) {
               <Link href="/" className="flex items-center">
                 <Image
                   src="/bugninja.svg"
-                  alt="BugNinja Logo"
+                  alt="Bugninja Logo"
                   width={110}
                   height={28}
                   className="h-8 w-auto"
@@ -116,7 +116,7 @@ export function PageHeader({ className }: PageHeaderProps) {
             {/* Right section - Action Buttons (tablet only) */}
             <div className="hidden sm:flex flex-1 items-center justify-end gap-3">
               <Button variant="ghost" size="default" className="whitespace-nowrap" asChild>
-                <Link href="/demo">
+                <Link href="/book-meeting">
                   Book a demo
                 </Link>
               </Button>

@@ -15,8 +15,12 @@ export function Hero() {
 
   useEffect(() => {
     const elements = [logoRef.current, headlineRef.current, subheadlineRef.current, buttonsRef.current, heroImageRef.current]
-    gsap.set(elements, { autoAlpha: 0, y: 40 })
-    gsap.to(elements, {
+    const validElements = elements.filter(el => el !== null)
+    
+    if (!validElements.length) return
+    
+    gsap.set(validElements, { autoAlpha: 0, y: 40 })
+    gsap.to(validElements, {
       autoAlpha: 1,
       y: 0,
       duration: 1.1,
@@ -33,7 +37,7 @@ export function Hero() {
             <Image
               ref={logoRef}
               src="/bugninja-icon.png"
-              alt="BugNinja Logo"
+              alt="Bugninja Logo"
               width={120}
               height={120}
               className="mb-10 shadow-xl shadow-primary-900/20 rounded-[29px] transition-transform duration-200 hover:scale-105"
@@ -57,7 +61,7 @@ export function Hero() {
               <CTAButton href="/demo">
                 Get started for free
               </CTAButton>
-              <SecondaryButton href="/docs">
+              <SecondaryButton href="/book-meeting">
                 Book a demo
               </SecondaryButton>
             </div>
@@ -70,9 +74,10 @@ export function Hero() {
             >
               <Image
                 src="/hero-image.png"
-                alt="BugNinja Platform Preview"
+                alt="Bugninja Platform Preview"
                 fill
                 className="object-cover"
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1200px"
                 priority
               />
             </div>

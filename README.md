@@ -1,4 +1,4 @@
-# BugNinja Product
+# Bugninja Product
 
 A full-stack application built with a modern microservices architecture using Docker containers, featuring a Next.js frontend, Strapi CMS, PostgreSQL database, and Umami analytics.
 

@@ -27,7 +27,7 @@ export async function generateMetadata({ params }: ArticlePageProps): Promise<Me
   
   if (!article) {
     return {
-      title: 'Article Not Found | BugNinja',
+      title: 'Article Not Found | Bugninja',
       description: 'The requested article could not be found.',
     };
   }
@@ -56,7 +56,7 @@ export async function generateMetadata({ params }: ArticlePageProps): Promise<Me
       type: 'article',
       publishedTime: attributes.publishDate,
       modifiedTime: attributes.updateDate,
-      authors: [attributes.author?.data?.attributes?.name || (attributes.author as any)?.name || 'BugNinja'],
+      authors: [attributes.author?.data?.attributes?.name || (attributes.author as any)?.name || 'Bugninja'],
       images: fullImageUrl ? [
         {
           url: fullImageUrl,

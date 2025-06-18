@@ -15,12 +15,12 @@ export default function Terms() {
 
             <section className="mb-8">
               <h2 className="display-font text-2xl font-semibold mb-4">1. Acceptance of Terms</h2>
-              <p>By accessing and using BugNinja's services, you agree to be bound by these Terms and Conditions. If you do not agree to these terms, please do not use our services.</p>
+              <p>By accessing and using Bugninja's services, you agree to be bound by these Terms and Conditions. If you do not agree to these terms, please do not use our services.</p>
             </section>
 
             <section className="mb-8">
               <h2 className="display-font text-2xl font-semibold mb-4">2. Description of Service</h2>
-              <p>BugNinja provides AI-powered bug detection and testing services. We reserve the right to modify, suspend, or discontinue any aspect of our services at any time.</p>
+              <p>Bugninja provides AI-powered bug detection and testing services. We reserve the right to modify, suspend, or discontinue any aspect of our services at any time.</p>
             </section>
 
             <section className="mb-8">
@@ -47,12 +47,12 @@ export default function Terms() {
 
             <section className="mb-8">
               <h2 className="display-font text-2xl font-semibold mb-4">5. Intellectual Property</h2>
-              <p>All content, features, and functionality of our services are owned by BugNinja and are protected by international copyright, trademark, and other intellectual property laws.</p>
+              <p>All content, features, and functionality of our services are owned by Bugninja and are protected by international copyright, trademark, and other intellectual property laws.</p>
             </section>
 
             <section className="mb-8">
               <h2 className="display-font text-2xl font-semibold mb-4">6. Limitation of Liability</h2>
-              <p>BugNinja shall not be liable for any indirect, incidental, special, consequential, or punitive damages resulting from your use of or inability to use our services.</p>
+              <p>Bugninja shall not be liable for any indirect, incidental, special, consequential, or punitive damages resulting from your use of or inability to use our services.</p>
             </section>
 
             <section className="mb-8">

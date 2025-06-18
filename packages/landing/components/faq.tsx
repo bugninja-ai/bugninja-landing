@@ -10,8 +10,8 @@ gsap.registerPlugin(ScrollTrigger);
 export function FAQ() {
   const faqs = [
     {
-      question: "What is BugNinja?",
-      answer: "BugNinja is an AI-powered testing platform that helps you find and fix bugs automatically, saving you time and improving your product quality.",
+      question: "What is Bugninja?",
+      answer: "Bugninja is an AI-powered testing platform that helps you find and fix bugs automatically, saving you time and improving your product quality.",
     },
     {
       question: "How does the AI testing work?",
@@ -19,11 +19,11 @@ export function FAQ() {
     },
     {
       question: "Is there a free plan?",
-      answer: "Yes! BugNinja offers a free plan with unlimited test runs and basic AI bug detection.",
+      answer: "Yes! Bugninja offers a free plan with unlimited test runs and basic AI bug detection.",
     },
     {
-      question: "Can I integrate BugNinja with my CI/CD pipeline?",
-      answer: "Absolutely. BugNinja provides easy integration with popular CI/CD tools so you can automate testing in your workflow.",
+      question: "Can I integrate Bugninja with my CI/CD pipeline?",
+      answer: "Absolutely. Bugninja provides easy integration with popular CI/CD tools so you can automate testing in your workflow.",
     },
     {
       question: "How do I get support?",
@@ -60,9 +60,10 @@ export function FAQ() {
     itemRefs.current = itemRefs.current.slice(0, faqs.length);
 
     // GSAP ScrollTrigger animation for AccordionItems
-    if (itemRefs.current.length) {
-      gsap.set(itemRefs.current, { autoAlpha: 0, y: 40 });
-      gsap.to(itemRefs.current, {
+    const validItemRefs = itemRefs.current.filter(ref => ref !== null);
+    if (validItemRefs.length) {
+      gsap.set(validItemRefs, { autoAlpha: 0, y: 40 });
+      gsap.to(validItemRefs, {
         autoAlpha: 1,
         y: 0,
         duration: 1,

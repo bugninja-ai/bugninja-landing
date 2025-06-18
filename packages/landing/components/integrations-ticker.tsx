@@ -112,6 +112,7 @@ export function IntegrationsTicker() {
                   alt={integration.alt}
                   fill
                   className="object-contain"
+                  sizes="150px"
                   priority={index < 5}
                 />
               </div>

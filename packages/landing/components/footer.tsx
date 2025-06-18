@@ -12,7 +12,7 @@ export function Footer() {
           <Link href="/" className="flex items-center">
             <Image
               src="/bugninja.svg"
-              alt="BugNinja Logo"
+              alt="Bugninja Logo"
               width={110}
               height={28}
               className="h-8 w-auto"
@@ -41,7 +41,7 @@ export function Footer() {
         </div>
       </div>
       <div className="text-left text-xs text-muted-foreground mt-8 w-full container mx-auto">
-        © {new Date().getFullYear()} BugNinja. All rights reserved. 
+        © {new Date().getFullYear()} Bugninja. All rights reserved. 
         <span className="mx-2">•</span>
         <Link href="/privacy-policy" className="hover:underline">Privacy Policy</Link>
         <span className="mx-2">•</span>

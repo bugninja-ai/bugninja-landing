@@ -123,6 +123,7 @@ export function LogoTicker() {
                   alt={logo.alt}
                   fill
                   className="object-contain"
+                  sizes="150px"
                   priority={index < 5}
                 />
               </div>

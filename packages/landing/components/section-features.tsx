@@ -52,16 +52,19 @@ export function SectionFeatures() {
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   useEffect(() => {
-    if (!cardRefs.current.length) return;
-    gsap.set(cardRefs.current, { autoAlpha: 0, y: 40 });
-    gsap.to(cardRefs.current, {
+    // Filter out null values and ensure we have valid elements
+    const validRefs = cardRefs.current.filter(ref => ref !== null);
+    if (!validRefs.length) return;
+    
+    gsap.set(validRefs, { autoAlpha: 0, y: 40 });
+    gsap.to(validRefs, {
       autoAlpha: 1,
       y: 0,
       duration: 1,
       stagger: 0.2,
       ease: 'power2.out',
       scrollTrigger: {
-        trigger: cardRefs.current[0]?.parentElement,
+        trigger: validRefs[0]?.parentElement,
         start: 'top 80%',
         once: true,
       },

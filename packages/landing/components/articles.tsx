@@ -3,6 +3,7 @@ import React, { useRef, useEffect } from 'react';
 import { H2Wrapper } from './h2-wrapper';
 import { SecondaryButton } from './secondary-button';
 import Link from 'next/link';
+import Image from 'next/image';
 import { cn } from '@bugninja/shared-ui';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -10,19 +11,19 @@ gsap.registerPlugin(ScrollTrigger);
 
 const articles = [
   {
-    image: '/images/article1.jpg',
+    image: '/feature1.png',
     title: 'How AI is Changing Software Testing',
     description: 'Discover how artificial intelligence is revolutionizing the way we test and ship software products.',
     link: '/blog/how-ai-is-changing-software-testing',
   },
   {
-    image: '/images/article2.jpg',
+    image: '/feature3.png',
     title: 'Best Practices for Automated QA',
     description: 'Learn the top strategies and tools for implementing effective automated quality assurance in your workflow.',
     link: '/blog/best-practices-for-automated-qa',
   },
   {
-    image: '/images/article3.jpg',
+    image: '/feature4.png',
     title: 'Debugging in the Age of AI',
     description: 'Explore new debugging techniques and how AI can help you find and fix bugs faster than ever.',
     link: '/blog/debugging-in-the-age-of-ai',
@@ -33,16 +34,19 @@ export function Articles() {
   const cardRefs = useRef<(HTMLAnchorElement | null)[]>([]);
 
   useEffect(() => {
-    if (!cardRefs.current.length) return;
-    gsap.set(cardRefs.current, { autoAlpha: 0, y: 40 });
-    gsap.to(cardRefs.current, {
+    // Filter out null values and ensure we have valid elements
+    const validRefs = cardRefs.current.filter(ref => ref !== null);
+    if (!validRefs.length) return;
+    
+    gsap.set(validRefs, { autoAlpha: 0, y: 40 });
+    gsap.to(validRefs, {
       autoAlpha: 1,
       y: 0,
       duration: 1,
       stagger: 0.1,
       ease: 'power2.out',
       scrollTrigger: {
-        trigger: cardRefs.current[0]?.parentElement,
+        trigger: validRefs[0]?.parentElement,
         start: 'top 80%',
         once: true,
       },
@@ -67,8 +71,14 @@ export function Articles() {
               "transition-all duration-200 ease-out hover:border-primary-500"
             )}
           >
-            <div className="w-full aspect-square mb-4 rounded-lg overflow-hidden bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
-              <img src={article.image} alt={article.title} className="object-cover w-full h-full" />
+            <div className="w-full aspect-square mb-4 rounded-lg overflow-hidden bg-gray-200 dark:bg-gray-700 relative">
+              <Image 
+                src={article.image} 
+                alt={article.title} 
+                fill
+                className="object-cover" 
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              />
             </div>
             <h3 className="display-font text-xl font-semibold mb-2">{article.title}</h3>
             <p className="text-muted-foreground mb-4">{article.description}</p>

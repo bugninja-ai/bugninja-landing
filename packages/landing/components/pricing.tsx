@@ -1,5 +1,6 @@
 "use client";
 import React, { useRef, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { H2Wrapper } from './h2-wrapper';
 import { CTAButtonOnPrimary } from './cta-button';
 import { Button } from '@bugninja/shared-ui/components/ui/button';
@@ -10,20 +11,29 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 gsap.registerPlugin(ScrollTrigger);
 
 export function Pricing() {
+  const router = useRouter();
   const freeRef = useRef<HTMLDivElement>(null);
   const paidRef = useRef<HTMLDivElement>(null);
 
+  const handleBookMeeting = () => {
+    router.push('/book-meeting');
+  };
+
   useEffect(() => {
     const cards = [freeRef.current, paidRef.current];
-    gsap.set(cards, { autoAlpha: 0, y: 40 });
-    gsap.to(cards, {
+    const validCards = cards.filter(card => card !== null);
+    
+    if (!validCards.length) return;
+    
+    gsap.set(validCards, { autoAlpha: 0, y: 40 });
+    gsap.to(validCards, {
       autoAlpha: 1,
       y: 0,
       duration: 1,
       stagger: 0.1,
       ease: 'power2.out',
       scrollTrigger: {
-        trigger: freeRef.current?.parentElement,
+        trigger: validCards[0]?.parentElement,
         start: 'top 80%',
         once: true,
       },
@@ -43,28 +53,29 @@ export function Pricing() {
           <h3 className="display-font text-2xl font-semibold mb-2">Free</h3>
           <div className="display-font text-4xl font-bold mb-4">$0<span className="text-base font-normal">/mo</span></div>
           <ul className="mb-6 space-y-2 text-center text-muted-foreground">
-            <li className="flex items-center justify-center gap-2"><Check className="h-4 w-4" /> Unlimited test runs</li>
-            <li className="flex items-center justify-center gap-2"><Check className="h-4 w-4" /> Basic AI bug detection</li>
+          <li className="flex items-center justify-center gap-2"><Check className="h-4 w-4" /> AI bug detection</li>
+            <li className="flex items-center justify-center gap-2"><Check className="h-4 w-4" /> 20 test cases</li>
+            <li className="flex items-center justify-center gap-2"><Check className="h-4 w-4" /> 10 runs / month</li>
             <li className="flex items-center justify-center gap-2"><Check className="h-4 w-4" /> Community support</li>
             <li className="flex items-center justify-center gap-2"><Check className="h-4 w-4" /> Email notifications</li>
           </ul>
           <div className="flex-1 flex items-end">
-            <SecondaryButton className="h-14">Get Started</SecondaryButton>
+            <SecondaryButton className="h-14" onClick={handleBookMeeting}>Get started</SecondaryButton>
           </div>
         </div>
         {/* Paid Plan */}
         <div ref={paidRef} className="flex flex-col bg-primary-700 text-primary-foreground rounded-2xl p-8 items-center shadow-lg">
           <h3 className="display-font text-2xl font-semibold mb-2">Pro</h3>
-          <div className="display-font text-4xl font-bold mb-4">$49<span className="text-base font-normal">/mo</span></div>
+          <div className="display-font text-4xl font-bold mb-4">$299<span className="text-base font-normal">/mo</span></div>
           <ul className="mb-6 space-y-2 text-center">
-            <li className="flex items-center justify-center gap-2"><Check className="h-4 w-4" /> Everything in Free</li>
-            <li className="flex items-center justify-center gap-2"><Check className="h-4 w-4" /> Advanced AI bug detection</li>
+            <li className="flex items-center justify-center gap-2"><Check className="h-4 w-4" /> CI/CD integration</li>
             <li className="flex items-center justify-center gap-2"><Check className="h-4 w-4" /> Priority email & chat support</li>
-            <li className="flex items-center justify-center gap-2"><Check className="h-4 w-4" /> Team collaboration</li>
-            <li className="flex items-center justify-center gap-2"><Check className="h-4 w-4" /> Custom integrations</li>
+            <li className="flex items-center justify-center gap-2"><Check className="h-4 w-4" /> Unlimited runs</li>
+            <li className="flex items-center justify-center gap-2"><Check className="h-4 w-4" /> Test cases from Word, PDF, Excel, etc.</li>            
+            <li className="flex items-center justify-center gap-2"><Check className="h-4 w-4" /> Scheduled runs</li>            
           </ul>
           <div className="flex-1 w-full flex items-end">
-            <CTAButtonOnPrimary className="w-full h-14">Subcribe to PRO</CTAButtonOnPrimary>
+            <CTAButtonOnPrimary className="w-full h-14" onClick={handleBookMeeting}>Subscribe to Pro</CTAButtonOnPrimary>
           </div>
         </div>
       </div>

@@ -5,8 +5,8 @@ import './globals.css'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'BugNinja App',
-  description: 'BugNinja Application',
+  title: 'Bugninja App',
+  description: 'Bugninja Application',
 }
 
 export default function RootLayout({
