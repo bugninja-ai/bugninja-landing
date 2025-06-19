@@ -51,20 +51,27 @@ export async function getArticles(page = 1, pageSize = 10): Promise<ArticleListR
  * Get a single article by slug
  */
 export async function getArticleBySlug(slug: string): Promise<SingleArticleResponse> {
-  // First, find the article by slug to get the ID
-  const listResponse = await fetchAPI<ArticleListResponse>(
-    `articles?filters[slug][$eq]=${slug}&fields[0]=id`
+  // URL decode the slug in case it's encoded
+  const decodedSlug = decodeURIComponent(slug);
+  
+  // Get all articles with basic fields to find the matching slug
+  // Note: Using manual filtering instead of Strapi filters due to potential encoding issues
+  const allArticles = await fetchAPI<ArticleListResponse>(
+    `articles?fields[0]=slug&fields[1]=id`
   );
   
-  if (!listResponse.data.length) {
-    throw new Error(`Article with slug "${slug}" not found`);
-  }
-
-  const articleId = listResponse.data[0].id;
+  // Find the article by slug manually
+  const matchingArticle = allArticles.data.find(article => 
+    article.attributes.slug === decodedSlug
+  );
   
-  // Then fetch the full article by ID with all populated fields
+  if (!matchingArticle) {
+    throw new Error(`Article with slug "${decodedSlug}" not found`);
+  }
+  
+  // Fetch the full article by ID with all populated fields
   const fullArticle = await fetchAPI<{data: {id: string, attributes: any}}>(
-    `articles/${articleId}?populate=*`
+    `articles/${matchingArticle.id}?populate=*`
   );
 
   return {
@@ -101,12 +108,15 @@ export function getStrapiImageUrl(path: string): string {
 
 /**
  * Helper function to format a date string
+ * Uses UTC to ensure consistent formatting between server and client
  */
 export function formatDate(dateString: string): string {
-  return new Date(dateString).toLocaleDateString('en-US', {
+  const date = new Date(dateString);
+  return date.toLocaleDateString('en-US', {
     year: 'numeric',
     month: 'long',
     day: 'numeric',
+    timeZone: 'UTC'
   });
 }
 

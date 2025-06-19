@@ -3,8 +3,8 @@ import React, { useRef, useEffect, useState } from 'react';
 import { H2Wrapper } from './h2-wrapper';
 import { SecondaryButton } from './secondary-button';
 import Link from 'next/link';
-import Image from 'next/image';
 import { cn } from '@bugninja/shared-ui';
+import { Button } from '@bugninja/shared-ui/components/ui/button';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { getArticles, getStrapiImageUrl } from '@/utils/strapi';
@@ -12,7 +12,7 @@ import type { Article } from '@/types/blog';
 gsap.registerPlugin(ScrollTrigger);
 
 export function Articles() {
-  const cardRefs = useRef<(HTMLAnchorElement | null)[]>([]);
+  const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
   const [articles, setArticles] = useState<Article[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -69,44 +69,33 @@ export function Articles() {
           Array.from({ length: 3 }).map((_, idx) => (
             <div 
               key={idx}
-              className="bg-gray-50 rounded-2xl p-4 flex-1 flex flex-col items-start border border-gray-100 animate-pulse"
+              className="bg-gray-50 rounded-2xl p-6 flex-1 flex flex-col items-start border border-gray-100 animate-pulse"
             >
-              <div className="w-full aspect-square mb-4 rounded-lg bg-gray-300" />
-              <div className="h-6 bg-gray-300 rounded mb-2 w-3/4" />
-              <div className="h-4 bg-gray-300 rounded mb-1 w-full" />
+              <div className="h-6 bg-gray-300 rounded mb-3 w-3/4" />
+              <div className="h-4 bg-gray-300 rounded mb-2 w-full" />
               <div className="h-4 bg-gray-300 rounded mb-4 w-2/3" />
               <div className="h-4 bg-gray-300 rounded w-20 mt-auto" />
             </div>
           ))
         ) : articles.length > 0 ? (
           articles.map((article, idx) => {
-            const imageUrl = article.attributes.featuredImage?.data?.attributes?.url 
-              ? getStrapiImageUrl(article.attributes.featuredImage.data.attributes.url)
-              : '/feature1.png'; // fallback image
-            
             return (
-              <Link 
-                key={article.id} 
-                href={`/blog/${article.attributes.slug}`}
+              <div 
+                key={article.id}
                 ref={el => { cardRefs.current[idx] = el || null; }}
                 className={cn(
-                  "bg-gray-50 rounded-2xl p-4 flex-1 flex flex-col items-start border border-gray-100",
-                  "transition-all duration-200 ease-out hover:border-primary-500"
+                  "bg-gray-50 rounded-2xl p-6 flex-1 flex flex-col items-start border border-gray-100",
+                  "transition-all duration-200 ease-out hover:border-primary-500 hover:shadow-md"
                 )}
               >
-                <div className="w-full aspect-square mb-4 rounded-lg overflow-hidden bg-gray-200 dark:bg-gray-700 relative">
-                  <Image 
-                    src={imageUrl} 
-                    alt={article.attributes.title} 
-                    fill
-                    className="object-cover" 
-                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                  />
-                </div>
-                <h3 className="display-font text-xl font-semibold mb-2">{article.attributes.title}</h3>
-                <p className="text-muted-foreground mb-4">{article.attributes.summary}</p>
-                <span className="text-primary-800 font-medium hover:underline mt-auto">Read more →</span>
-              </Link>
+                <h3 className="display-font text-xl font-semibold mb-3 leading-tight">{article.attributes.title}</h3>
+                <p className="text-muted-foreground mb-4 flex-grow line-clamp-3">{article.attributes.summary}</p>
+                <Button size="default" className="mt-auto" asChild>
+                  <Link href={`/blog/${article.attributes.slug}`}>
+                    Read more →
+                  </Link>
+                </Button>
+              </div>
             );
           })
         ) : (

@@ -251,9 +251,10 @@ export function ArticleDetail({ article }: ArticleDetailProps) {
             </ReactMarkdown>
           </div>
 
+
           {/* CTAs Section */}
           {ctas.length > 0 && (
-            <div className="mt-16 pt-8 border-t border-gray-200">
+            <div className="mt-16 pt-8">
               <div className="flex flex-col space-y-4">
                 {ctas.map((cta) => (
                   <a
@@ -277,7 +278,7 @@ export function ArticleDetail({ article }: ArticleDetailProps) {
 
           {/* References Section */}
           {attributes.references && attributes.references.length > 0 && (
-            <div className="mt-20 pt-8 border-t border-gray-200">
+            <div className="mt-20 pt-8">
               <h2 className="text-3xl font-bold text-gray-900 mb-8">References</h2>
               <div className="grid gap-6">
                 {attributes.references.map((reference) => (

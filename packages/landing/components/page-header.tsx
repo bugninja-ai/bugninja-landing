@@ -30,7 +30,7 @@ export function PageHeader({ className }: PageHeaderProps) {
     <div className="sticky top-0 z-50">
       <header className={cn(
         "w-full border-b border-border border-dashed bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 transition-colors duration-200",
-        isScrolled && "bg-primary-100/40 dark:bg-primary-100/20",
+        //isScrolled && "bg-primary-100/40 dark:bg-primary-100/20",
         className
       )}>
         {/* Desktop container */}

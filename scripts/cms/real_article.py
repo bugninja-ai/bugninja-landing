@@ -66,10 +66,11 @@ Follow these guidelines:
 
 IMPORTANT SEO CHARACTER LIMITS:
 - Meta Title: Maximum 60 characters (will be truncated in search results if longer)
-- Meta Description: Maximum 160 characters (will be truncated in search results if longer)
+- Meta Description / Summary: Maximum 160 characters (will be truncated in search results if longer)
 - URL/Slug: Keep under 75 characters, use hyphens between words
 - Headlines (H2, H3): Keep under 70 characters for readability
-- Focus Keywords: 3-5 keywords/phrases maximum, each keyword should be used at least twice in the content
+- Focus Keywords: 3-5 keywords/phrases maximum, each keyword should be used at least twice in the conten
+- Every keyword that you list in the keywords field should be used in the content at least twice.
 
 The output should be a JSON object with all the fields required by Strapi CMS, following the exact structure provided.
 """
@@ -107,7 +108,7 @@ JSON_STRUCTURE = """
   "seo": {
     "metaTitle": "Keyword-Rich Title Under 60 Characters",
     "metaDescription": "Compelling meta description with primary keyword that stays under 160 characters for optimal display in search results.",
-    "keywords": "keyword1, keyword2, keyword3, keyword4, keyword5",
+    "keywords": "keyword1, keyword2, keyword3, keyword4, keyword5", (THESE KEYWORDS ARE IMPORTANT, ONLY SELECT KEYWORDS THAT AT LEAST APPEAR TWICE IN THE CONTENT ABOVE)
     "metaRobots": "index, follow",
     "canonicalURL": "https://example.com/canonical-url",
     "preventIndexing": false,
@@ -987,7 +988,7 @@ def main():
     """Main function to generate and upload SEO content"""
     # Read topic from SEO_INSTRUCT.md
     script_dir = os.path.dirname(os.path.abspath(__file__))
-    input_file = os.path.join(script_dir, "SEO_INSTRUCT.md")
+    input_file = os.path.join(script_dir, "SELENIUM_VS_BUGNINJA.md")
 
     try:
         with open(input_file, "r") as f:
