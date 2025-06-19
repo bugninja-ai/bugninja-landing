@@ -8,7 +8,7 @@ export function CTASection() {
           <h1 className="display-font text-4xl sm:text-5xl text-white mb-8">
             Get Bugninja for free today
           </h1>
-          <CTAButtonOnPrimary href="/demo">
+          <CTAButtonOnPrimary href="/book-meeting">
             Get started for free
           </CTAButtonOnPrimary>
         </div>

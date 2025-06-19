@@ -158,7 +158,7 @@ export function Hero() {
               ref={buttonsRef}
               className="mt-10 flex flex-col md:flex-row items-center gap-y-6 md:gap-y-0 md:gap-x-2"
             >
-              <CTAButton href="/demo">
+              <CTAButton href="/book-meeting">
                 Get started for free
               </CTAButton>
               <SecondaryButton href="/book-meeting">

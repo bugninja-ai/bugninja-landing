@@ -107,7 +107,7 @@ export function NavigationOverlay({ isOpen, onOpenChange }: NavigationOverlayPro
                   className="w-full justify-start transition-colors hover:bg-accent/10" 
                   asChild
                 >
-                  <Link href="/auth" onClick={() => onOpenChange(false)}>
+                  <Link href="/book-meeting" onClick={() => onOpenChange(false)}>
                     Log in or register
                   </Link>
                 </Button>
@@ -115,7 +115,7 @@ export function NavigationOverlay({ isOpen, onOpenChange }: NavigationOverlayPro
                   className="w-full justify-start transition-colors hover:bg-accent/10" 
                   asChild
                 >
-                  <Link href="/demo" onClick={() => onOpenChange(false)}>
+                  <Link href="/book-meeting" onClick={() => onOpenChange(false)}>
                     Book a demo
                   </Link>
                 </Button>

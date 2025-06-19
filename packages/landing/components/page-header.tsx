@@ -65,7 +65,7 @@ export function PageHeader({ className }: PageHeaderProps) {
                 </Link>
               </Button>
               <Button size="default" className="whitespace-nowrap" asChild>
-                <Link href="/auth">
+                <Link href="/book-meeting">
                   Log in or register
                 </Link>
               </Button>
@@ -121,7 +121,7 @@ export function PageHeader({ className }: PageHeaderProps) {
                 </Link>
               </Button>
               <Button size="default" className="whitespace-nowrap" asChild>
-                <Link href="/auth">
+                <Link href="/book-meeting">
                   Log in or register
                 </Link>
               </Button>

@@ -10,10 +10,12 @@ import { Divider } from '@/components/divider'
 import { Pricing } from '@/components/pricing'
 import { LogoTicker } from '@/components/logo-ticker'
 import { IntegrationsTicker } from '@/components/integrations-ticker'
+import { CustomCursor } from '@/components/custom-cursor'
 
 export default function Home() {
   return (
     <div className="flex min-h-screen flex-col background text-foreground gap-0">
+      <CustomCursor />
       <PageHeader />
       <main className="flex-1">
         <Hero />

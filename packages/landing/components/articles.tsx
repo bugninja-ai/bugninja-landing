@@ -85,7 +85,7 @@ export function Articles() {
                 ref={el => { cardRefs.current[idx] = el || null; }}
                 className={cn(
                   "bg-gray-50 rounded-2xl p-6 flex-1 flex flex-col items-start border border-gray-100",
-                  "transition-all duration-200 ease-out hover:border-primary-500 hover:shadow-md"
+                  "transition-all duration-200 ease-out hover:border-dashed hover:border-border hover:border-gray-300"
                 )}
               >
                 <h3 className="display-font text-xl font-semibold mb-3 leading-tight">{article.attributes.title}</h3>

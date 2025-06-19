@@ -64,7 +64,7 @@ export function Pricing() {
           </div>
         </div>
         {/* Paid Plan */}
-        <div ref={paidRef} className="flex flex-col bg-[url('/bg-img.png')] bg-cover bg-center text-primary-foreground rounded-2xl p-8 items-center shadow-lg">
+        <div ref={paidRef} className="flex flex-col bg-[url('/bg-img.png')] bg-cover bg-right text-primary-foreground rounded-2xl p-8 items-center shadow-lg">
           <h3 className="display-font text-2xl font-semibold mb-2">Pro</h3>
           <div className="display-font text-4xl font-bold mb-4">$399<span className="text-base font-normal">/mo</span></div>
           <ul className="mb-6 space-y-2 text-center">
