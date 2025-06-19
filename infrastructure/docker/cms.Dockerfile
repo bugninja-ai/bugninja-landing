@@ -5,9 +5,11 @@ WORKDIR /app
 # Install Strapi CLI globally
 RUN npm install -g @strapi/strapi@latest
 
-# Copy package.json and install dependencies
-COPY package.json ./
-RUN npm install
+# Copy package files
+COPY package*.json ./
+
+# Clean install dependencies with verbose logging
+RUN npm install --verbose --no-optional
 
 # Install Strapi SEO plugin
 RUN npm install @strapi/plugin-seo
