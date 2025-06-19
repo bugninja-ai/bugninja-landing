@@ -144,15 +144,15 @@ export function Hero() {
             />
             <h1
               ref={headlineRef}
-              className="display-font text-4xl md:text-6xl text-grey-950"
+              className="display-font text-4xl md:text-6xl text-grey-950 mb-3"
             >
               Fully automated AI-based testing that never sleeps  
             </h1>
             <p
               ref={subheadlineRef}
-              className="mt-6 sm:mt-2 text-lg leading-8 text-muted-foreground"
+              className="mt-10 sm:mt-2 text-lg leading-8 text-muted-foreground max-w-xl"
             >
-              Find bugs in your product before they cost you money.
+              Simulate real users for E2E testing and find bugs in your product before they cost you money.
             </p>
             <div
               ref={buttonsRef}
