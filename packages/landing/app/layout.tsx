@@ -8,6 +8,9 @@ export const metadata: Metadata = {
   title: 'Bugninja - AI-Powered Debugging Assistant',
   description: 'Debug smarter, not harder with Bugninja. Your AI-powered debugging assistant that helps you find and fix bugs faster.',
   themeColor: '#6c66ee',
+  icons: {
+    icon: '/favicon.png',
+  },
   other: {
     'theme-color': '#6c66ee',
     'msapplication-TileColor': '#6c66ee',
