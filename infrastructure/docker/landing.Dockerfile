@@ -9,9 +9,14 @@ COPY packages/shared-ui/package.json ./packages/shared-ui/
 
 # Install dependencies
 RUN npm ci
+RUN npm install sharp
 
 # Stage 2: Builder
 FROM node:20-alpine AS builder
+ARG NEXT_PUBLIC_STRAPI_API_TOKEN
+ARG NEXT_PUBLIC_STRAPI_URL
+ARG STRAPI_INTERNAL_URL
+
 WORKDIR /app
 
 # Copy dependencies from deps stage
