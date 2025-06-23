@@ -7,12 +7,18 @@ RUN npm install -g @strapi/strapi@latest
 
 # Copy package files
 COPY package*.json ./
+COPY favicon.ico ./
 
 # Clean install dependencies with verbose logging
 RUN npm install --verbose --no-optional
 
+# Install required dependencies for Strapi admin
+RUN npm install react@18.0.0 react-dom@18.0.0 react-router-dom@5.2.0 styled-components@5.2.1 --verbose
+
 # Install Strapi SEO plugin
 RUN npm install @strapi/plugin-seo
+
+RUN npm update --verbose
 
 # Create uploads directory
 RUN mkdir -p ./public/uploadscms.
@@ -21,7 +27,8 @@ RUN mkdir -p ./public/uploadscms.
 COPY . .
 
 # Make start script executable
-RUN chmod +x start.sh
+ RUN sed -i 's/\r$//' start.sh  && \  
+     chmod +x start.sh
 
 # Expose port
 EXPOSE 1337
