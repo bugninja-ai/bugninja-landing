@@ -9,7 +9,9 @@ const nextConfig = {
     domains: [
       'localhost',
       'cms', // for internal Docker use
-      'bugninja-product-cms-1'
+      'bugninja-product-cms-1',
+      'cms.bugninja.ai',
+      'bugninja.ai'
     ],
   },
 
