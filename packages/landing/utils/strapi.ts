@@ -23,8 +23,11 @@ async function fetchAPI<T>(endpoint: string, options = {}): Promise<T> {
   };
 
   try {
-    // Use internal URL for server-side requests
-    const url = `${INTERNAL_URL}/api/${endpoint}`;
+    // Use PUBLIC_URL for client-side requests, INTERNAL_URL for server-side
+    const isClientSide = typeof window !== 'undefined';
+    const baseUrl = isClientSide ? PUBLIC_URL : INTERNAL_URL;
+    const url = `${baseUrl}/api/${endpoint}`;
+    
     const response = await fetch(url, mergedOptions);
 
     if (!response.ok) {
