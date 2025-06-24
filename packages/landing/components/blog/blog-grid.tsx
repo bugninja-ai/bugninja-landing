@@ -25,6 +25,9 @@ export function BlogGrid({ articles }: BlogGridProps) {
             ? getStrapiImageUrl(attributes.featuredImage.data.attributes.url)
             : '/blog/featured-article.jpg';
 
+          // Handle the correct author data structure from Strapi API
+          const authorData = (attributes as any).author?.data?.attributes;
+
           return (
             <article key={article.id} className="flex flex-col items-start">
               <div className="relative w-full">
@@ -42,10 +45,10 @@ export function BlogGrid({ articles }: BlogGridProps) {
                   <time dateTime={attributes.publishDate}>
                     {formatDate(attributes.publishDate)}
                   </time>
-                  {attributes.author && (
+                  {authorData && (
                     <>
                       <span className="mx-1">•</span>
-                      <span>By {attributes.author.name}</span>
+                      <span>By {authorData.name}</span>
                     </>
                   )}
                 </div>

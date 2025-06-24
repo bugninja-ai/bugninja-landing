@@ -15,6 +15,9 @@ export function BlogHero({ article }: BlogHeroProps) {
     ? getStrapiImageUrl(attributes.featuredImage.data.attributes.url)
     : '/blog/featured-article.jpg';
 
+  // Handle the correct author data structure from Strapi API
+  const authorData = (attributes as any).author?.data?.attributes;
+
   return (
     <section className="container mx-auto px-4 py-20 border-l border-r border-dashed border-border bg-white">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
@@ -37,9 +40,9 @@ export function BlogHero({ article }: BlogHeroProps) {
             {attributes.title}
           </h1>
           {/* Author above description */}
-          {attributes.author && (
+          {authorData && (
             <div className="text-base text-gray-600">
-              By {attributes.author.name}
+              By {authorData.name}
             </div>
           )}
           <p className="text-xl text-gray-700 leading-relaxed">
