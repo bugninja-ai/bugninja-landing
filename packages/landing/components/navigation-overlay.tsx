@@ -95,28 +95,34 @@ export function NavigationOverlay({ isOpen, onOpenChange }: NavigationOverlayPro
               <div className="flex flex-col gap-2">
                 <Navigation 
                   isVertical={true} 
-                  className="flex-col items-start space-y-2"
+                  className="flex-col items-center space-y-2"
                   onClick={handleNavigationClick}
                 />
               </div>
 
+              {/* Separator line */}
+              <div className="-mx-6">
+                <div className="w-full border-t border-border border-dashed"></div>
+              </div>
+
               {/* Action buttons (only visible in mobile menu on mobile) */}
-              <div className="flex flex-col gap-2 sm:hidden">
+              <div className="flex flex-col gap-3 sm:hidden items-center">
+             
                 <Button 
                   variant="ghost" 
-                  className="w-full justify-start transition-colors hover:bg-accent/10" 
-                  asChild
-                >
-                  <Link href="/book-meeting" onClick={() => onOpenChange(false)}>
-                    Log in or register
-                  </Link>
-                </Button>
-                <Button 
-                  className="w-full justify-start transition-colors hover:bg-accent/10" 
+                  className="w-full max-w-[200px] justify-center text-muted-foreground hover:text-foreground transition-colors hover:bg-accent/10" 
                   asChild
                 >
                   <Link href="/book-meeting" onClick={() => onOpenChange(false)}>
                     Book a demo
+                  </Link>
+                </Button>
+                <Button 
+                  className="w-full max-w-[200px] justify-center transition-colors hover:bg-primary-800" 
+                  asChild
+                >
+                  <Link href="/book-meeting" onClick={() => onOpenChange(false)}>
+                    Log in or register
                   </Link>
                 </Button>
               </div>

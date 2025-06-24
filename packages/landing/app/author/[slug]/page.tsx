@@ -97,11 +97,12 @@ export default async function AuthorPage({ params }: AuthorPageProps) {
     notFound();
   }
   
-  const { name, role, bio, profilePicture, socialLinks, id } = author;
+  const { name, role, bio, profilePicture, socialLinks } = author;
   
-  // Fetch author's articles
-  const articlesResponse = await getArticlesByAuthor(id);
-  const articles = articlesResponse.data;
+  // Fetch author's articles using slug directly
+  const articlesResponse = await getArticlesByAuthor(params.slug);
+  const articles = Array.isArray(articlesResponse?.data) ? articlesResponse.data : [];
+  const hasArticles = articles.length > 0;
   
   // Handle profile picture URL correctly
   const getProfilePicUrl = () => {
@@ -161,8 +162,12 @@ export default async function AuthorPage({ params }: AuthorPageProps) {
           </article>
         </section>
         <Divider />
-        <AuthorArticlesGrid articles={articles} />
-        <Divider />
+        {hasArticles && (
+          <>
+            <AuthorArticlesGrid articles={articles} />
+            <Divider />
+          </>
+        )}
         <CTASection />
       </main>
       <Footer />

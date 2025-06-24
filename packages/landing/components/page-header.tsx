@@ -59,7 +59,7 @@ export function PageHeader({ className }: PageHeaderProps) {
 
             {/* Right section - Action Buttons */}
             <div className="w-[200px] flex-shrink-0 flex items-center justify-end gap-3">
-              <Button variant="ghost" size="default" className="whitespace-nowrap" asChild>
+              <Button variant="ghost" size="default" className="whitespace-nowrap text-muted-foreground hover:text-foreground" asChild>
                 <Link href="/book-meeting">
                   Book a demo
                 </Link>

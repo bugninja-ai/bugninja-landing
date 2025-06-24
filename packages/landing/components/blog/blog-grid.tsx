@@ -42,10 +42,10 @@ export function BlogGrid({ articles }: BlogGridProps) {
                   <time dateTime={attributes.publishDate}>
                     {formatDate(attributes.publishDate)}
                   </time>
-                  {attributes.author?.data && (
+                  {attributes.author && (
                     <>
                       <span className="mx-1">•</span>
-                      <span>By {attributes.author.data.attributes.name}</span>
+                      <span>By {attributes.author.name}</span>
                     </>
                   )}
                 </div>

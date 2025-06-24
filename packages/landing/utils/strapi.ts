@@ -1,4 +1,4 @@
-import { ArticleListResponse, SingleArticleResponse } from '@/types/blog';
+import { ArticleListResponse, SingleArticleResponse, StrapiAuthor } from '@/types/blog';
 
 // URL for browser-side requests (images, client-side fetching)
 const PUBLIC_URL = process.env.NEXT_PUBLIC_STRAPI_URL || 'http://localhost:1337';
@@ -144,16 +144,20 @@ export function getMetaTags(seo: any) {
 
 export async function getAuthorBySlug(slug: string) {
   const decodedSlug = decodeURIComponent(slug);
+  
   // Get all authors with their slugs to find the matching one
   const allAuthors = await fetchAPI<any>(
-    `authors?fields%5B0%5D=slug&fields%5B1%5D=id`
+    `authors?fields[0]=slug&fields[1]=id`
   );
+  
   const matchingAuthor = allAuthors.data.find((author: any) => author.attributes.slug === decodedSlug);
   if (!matchingAuthor) return null;
+  
   // Fetch the full author by ID with all populated fields
   const fullAuthor = await fetchAPI<any>(
-    `authors/${matchingAuthor.id}?populate%5BprofilePicture%5D=%2A`
+    `authors/${matchingAuthor.id}?populate[profilePicture]=*&populate[socialLinks]=*&populate[articles][fields][0]=id`
   );
+  
   // Return the flat author object
   return {
     id: fullAuthor.data.id,
@@ -161,8 +165,41 @@ export async function getAuthorBySlug(slug: string) {
   };
 }
 
-export async function getArticlesByAuthor(authorId: string | number): Promise<ArticleListResponse> {
-  return fetchAPI<ArticleListResponse>(
-    `articles?filters[author][id][$eq]=${authorId}&populate=*&sort[0]=publishDate:desc`
+export async function getArticlesByAuthor(authorSlug: string): Promise<ArticleListResponse> {
+  // Get all articles first, then filter client-side since Strapi filtering is broken
+  const response = await fetchAPI<ArticleListResponse>(
+    `articles?` +
+    `populate[author][populate][profilePicture]=*&` +
+    `populate[featuredImage]=*&` +
+    `populate[categories]=*&` +
+    `populate[tags]=*&` +
+    `sort[0]=publishDate:desc`
   );
+
+  if (!response || !response.data) {
+    return {
+      data: [],
+      meta: { pagination: { page: 1, pageSize: 10, pageCount: 0, total: 0 } }
+    };
+  }
+
+  // Filter articles client-side by author slug since Strapi filtering is broken
+  const filteredArticles = response.data.filter(article => {
+    // Handle the actual API response structure where author is wrapped in data
+    const authorData = (article.attributes as any)?.author?.data;
+    const articleAuthorSlug = authorData?.attributes?.slug;
+    return articleAuthorSlug === authorSlug;
+  });
+
+  return {
+    data: filteredArticles,
+    meta: {
+      pagination: {
+        page: 1,
+        pageSize: filteredArticles.length,
+        pageCount: 1,
+        total: filteredArticles.length
+      }
+    }
+  };
 } 

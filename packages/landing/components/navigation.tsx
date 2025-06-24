@@ -65,9 +65,7 @@ export function Navigation({ isVertical = false, className, onClick }: Navigatio
             onClick={(e) => handleClick(e, item.href)}
             className={cn(
               "text-sm font-medium transition-colors hover:text-primary-800 cursor-pointer",
-              pathname === item.href
-                ? "text-foreground"
-                : "text-muted-foreground",
+              "text-muted-foreground",
               isVertical ? "w-full py-2 text-center" : ""
             )}
           >

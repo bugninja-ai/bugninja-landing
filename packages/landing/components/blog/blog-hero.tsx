@@ -37,9 +37,9 @@ export function BlogHero({ article }: BlogHeroProps) {
             {attributes.title}
           </h1>
           {/* Author above description */}
-          {attributes.author?.data && (
+          {attributes.author && (
             <div className="text-base text-gray-600">
-              By {attributes.author.data.attributes.name}
+              By {attributes.author.name}
             </div>
           )}
           <p className="text-xl text-gray-700 leading-relaxed">
