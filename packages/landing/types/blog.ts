@@ -16,14 +16,22 @@ export interface StrapiImage {
     };
   }
   
+  export interface SocialLink {
+    id: number;
+    platform: string;
+    url: string;
+  }
+  
   export interface StrapiAuthor {
-    data: {
-      id: number;
-      attributes: {
-        name: string;
-        // Add more fields as needed (e.g., avatar, bio)
-      };
-    };
+    id: number;
+    name: string;
+    slug: string;
+    email?: string;
+    bio?: string;
+    role?: string;
+    profilePicture?: StrapiImage | { url: string };
+    expertise?: string;
+    socialLinks?: SocialLink[];
   }
   
   export interface StrapiTag {

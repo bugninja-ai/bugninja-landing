@@ -5,6 +5,35 @@ import { PageHeader } from '@/components/page-header'
 import { Footer } from '@/components/footer'
 import { CTASection } from '@/components/cta-section'
 import { getArticles, getFeaturedArticles } from '@/utils/strapi'
+import { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'Blog - AI Testing Insights & Tutorials | Bugninja',
+  description: 'Explore the latest insights, tutorials, and best practices in AI-powered automated testing. Learn how to improve your testing workflow with Bugninja.',
+  openGraph: {
+    title: 'Blog - AI Testing Insights & Tutorials',
+    description: 'Explore the latest insights, tutorials, and best practices in AI-powered automated testing. Learn how to improve your testing workflow with Bugninja.',
+    type: 'website',
+    images: [{
+      url: '/seo-image.png',
+      width: 1200,
+      height: 630,
+      alt: 'Bugninja - Fully automated AI-based testing that never sleeps'
+    }],
+    siteName: 'Bugninja',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Blog - AI Testing Insights & Tutorials',
+    description: 'Explore the latest insights, tutorials, and best practices in AI-powered automated testing.',
+    images: [{
+      url: '/seo-image.png',
+      alt: 'Bugninja - Fully automated AI-based testing that never sleeps'
+    }],
+    site: '@bugninja',
+    creator: '@bugninja'
+  },
+}
 
 async function getBlogData() {
   try {

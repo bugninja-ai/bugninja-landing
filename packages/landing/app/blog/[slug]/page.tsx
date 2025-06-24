@@ -42,13 +42,20 @@ export async function generateMetadata({ params }: ArticlePageProps): Promise<Me
     
   const fullImageUrl = imageUrl ? `${process.env.NEXT_PUBLIC_STRAPI_URL}${imageUrl}` : null;
 
+  // Construct the canonical URL using the clean slug
+  const baseUrl = 'https://bugninja.ai';
+  const canonicalUrl = `${baseUrl}/blog/${params.slug}`;
+
+  // Get author name safely
+  const authorName = attributes.author?.name || 'Bugninja';
+
   return {
     title: seo?.metaTitle || attributes.title,
     description: seo?.metaDescription || attributes.summary,
     keywords: seo?.keywords,
     robots: seo?.metaRobots || 'index, follow',
     alternates: {
-      canonical: seo?.canonicalURL,
+      canonical: canonicalUrl,
     },
     openGraph: {
       title: seo?.metaTitle || attributes.title,
@@ -56,7 +63,8 @@ export async function generateMetadata({ params }: ArticlePageProps): Promise<Me
       type: 'article',
       publishedTime: attributes.publishDate,
       modifiedTime: attributes.updateDate,
-      authors: [attributes.author?.data?.attributes?.name || (attributes.author as any)?.name || 'Bugninja'],
+      authors: [authorName],
+      url: canonicalUrl,
       images: fullImageUrl ? [
         {
           url: fullImageUrl,

@@ -72,10 +72,11 @@ export async function getArticleBySlug(slug: string): Promise<SingleArticleRespo
     throw new Error(`Article with slug "${decodedSlug}" not found`);
   }
   
-  // Fetch the full article by ID with all populated fields
+  // Fetch the full article by ID with all populated fields including author details
   const fullArticle = await fetchAPI<{data: {id: string, attributes: any}}>(
-    `articles/${matchingArticle.id}?populate=*`
+    `articles/${matchingArticle.id}?populate%5Bauthor%5D%5Bfields%5D%5B0%5D=name&populate%5Bauthor%5D%5Bfields%5D%5B1%5D=slug&populate%5Bauthor%5D%5Bfields%5D%5B2%5D=role&populate%5Bauthor%5D%5Bfields%5D%5B3%5D=expertise&populate%5Bauthor%5D%5Bpopulate%5D%5BprofilePicture%5D=%2A`
   );
+  console.log('Full article response:', JSON.stringify(fullArticle, null, 2));
 
   return {
     data: {
@@ -140,4 +141,29 @@ export function getMetaTags(seo: any) {
     },
     structuredData: seo?.structuredData,
   };
+}
+
+export async function getAuthorBySlug(slug: string) {
+  const decodedSlug = decodeURIComponent(slug);
+  // Get all authors with their slugs to find the matching one
+  const allAuthors = await fetchAPI<any>(
+    `authors?fields%5B0%5D=slug&fields%5B1%5D=id`
+  );
+  const matchingAuthor = allAuthors.data.find((author: any) => author.attributes.slug === decodedSlug);
+  if (!matchingAuthor) return null;
+  // Fetch the full author by ID with all populated fields
+  const fullAuthor = await fetchAPI<any>(
+    `authors/${matchingAuthor.id}?populate%5BprofilePicture%5D=%2A`
+  );
+  // Return the flat author object
+  return {
+    id: fullAuthor.data.id,
+    ...fullAuthor.data.attributes,
+  };
+}
+
+export async function getArticlesByAuthor(authorId: string | number): Promise<ArticleListResponse> {
+  return fetchAPI<ArticleListResponse>(
+    `articles?filters[author][id][$eq]=${authorId}&populate=*&sort[0]=publishDate:desc`
+  );
 } 

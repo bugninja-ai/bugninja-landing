@@ -1,8 +1,9 @@
 'use client'
 
+import React from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { ArrowLeft, Clock } from 'lucide-react'
+import { ArrowLeft, Clock, ArrowRight } from 'lucide-react'
 import { SingleArticleResponse } from '@/types/blog'
 import { getStrapiImageUrl, formatDate } from '@/utils/strapi'
 import ReactMarkdown from 'react-markdown'
@@ -38,13 +39,33 @@ export function ArticleDetail({ article }: ArticleDetailProps) {
   };
 
   const getAuthorName = () => {
-    if (attributes.author?.data?.attributes?.name) {
-      return attributes.author.data.attributes.name;
-    }
-    if ((attributes.author as any)?.name) {
-      return (attributes.author as any).name;
+    if (attributes.author?.name) {
+      return attributes.author.name;
     }
     return null;
+  };
+
+  const getAuthorData = () => {
+    if (attributes.author) {
+      return attributes.author;
+    }
+    return null;
+  };
+
+  const getAuthorProfilePicture = () => {
+    const authorData = getAuthorData();
+    if (authorData?.profilePicture?.data?.attributes?.url) {
+      return getStrapiImageUrl(authorData.profilePicture.data.attributes.url);
+    }
+    if (authorData?.profilePicture?.url) {
+      return getStrapiImageUrl(authorData.profilePicture.url);
+    }
+    return '/blog/default-author.jpg';
+  };
+
+  const getAuthorSlug = () => {
+    const authorData = getAuthorData();
+    return authorData?.slug || null;
   };
 
   const getCategoriesArray = () => {
@@ -69,6 +90,8 @@ export function ArticleDetail({ article }: ArticleDetailProps) {
 
   const imageUrl = getImageUrl();
   const authorName = getAuthorName();
+  const authorProfilePicture = getAuthorProfilePicture();
+  const authorSlug = getAuthorSlug();
   const categories = getCategoriesArray();
   const tags = getTagsArray();
   const ctas = attributes.cta || [];
@@ -292,7 +315,7 @@ export function ArticleDetail({ article }: ArticleDetailProps) {
                       <h3 className="font-semibold text-lg text-gray-900 group-hover:text-primary-600 mb-3 transition-colors">
                         {reference.title}
                       </h3>
-                      <p className="text-gray-600 mb-4 leading-relaxed">
+                      <p className="text-gray-600 mb-4 text-base leading-relaxed">
                         {reference.description}
                       </p>
                       <div className="flex items-center text-sm text-gray-500">
@@ -305,6 +328,43 @@ export function ArticleDetail({ article }: ArticleDetailProps) {
                     </a>
                   </div>
                 ))}
+              </div>
+            </div>
+          )}
+
+          {/* About the Author Section */}
+          {authorName && (
+            <div className="mt-20 pt-8">
+              <h2 className="text-3xl font-bold text-gray-900 mb-8">About the Author</h2>
+              <div className="bg-gray-50 rounded-xl p-8 border border-dashed border-gray-300">
+                <div className="flex items-start space-x-6">
+                  <div className="relative w-20 h-20 rounded-full overflow-hidden flex-shrink-0">
+                    <Image
+                      src={authorProfilePicture}
+                      alt={authorName}
+                      fill
+                      className="object-cover"
+                    />
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="text-xl font-semibold text-gray-900 mb-2">{authorName}</h3>
+                    {getAuthorData()?.role && (
+                      <p className="text-base text-gray-600 mb-3">{getAuthorData()?.role}</p>
+                    )}
+                    {getAuthorData()?.expertise && (
+                      <p className="text-base text-gray-500 mb-4">{getAuthorData()?.expertise}</p>
+                    )}
+                    {authorSlug && (
+                      <Link
+                        href={`/author/${authorSlug}`}
+                        className="inline-flex items-center text-primary-600 hover:text-primary-700 font-medium transition-colors group"
+                      >
+                        Read more
+                        <ArrowRight size={16} className="ml-1 group-hover:translate-x-1 transition-transform" />
+                      </Link>
+                    )}
+                  </div>
+                </div>
               </div>
             </div>
           )}

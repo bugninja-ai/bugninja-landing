@@ -10,12 +10,12 @@ import { ArticlesClient } from './articles-client';
 
 export async function Articles() {
   let articles: Article[] = [];
-  
-  try {
-    const response = await getArticles(1, 3);
+
+      try {
+        const response = await getArticles(1, 3);
     articles = response.data;
-  } catch (error) {
-    console.error('Failed to fetch articles:', error);
+      } catch (error) {
+        console.error('Failed to fetch articles:', error);
     articles = [];
   }
 
