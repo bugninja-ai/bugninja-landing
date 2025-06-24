@@ -76,7 +76,6 @@ export async function getArticleBySlug(slug: string): Promise<SingleArticleRespo
   const fullArticle = await fetchAPI<{data: {id: string, attributes: any}}>(
     `articles/${matchingArticle.id}?populate%5Bauthor%5D%5Bfields%5D%5B0%5D=name&populate%5Bauthor%5D%5Bfields%5D%5B1%5D=slug&populate%5Bauthor%5D%5Bfields%5D%5B2%5D=role&populate%5Bauthor%5D%5Bfields%5D%5B3%5D=expertise&populate%5Bauthor%5D%5Bpopulate%5D%5BprofilePicture%5D=%2A`
   );
-  console.log('Full article response:', JSON.stringify(fullArticle, null, 2));
 
   return {
     data: {

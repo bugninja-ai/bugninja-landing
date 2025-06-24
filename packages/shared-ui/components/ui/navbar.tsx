@@ -59,7 +59,6 @@ export function Navbar({
 
   const handleSignOut = () => {
     // Simplified sign out - can be customized per implementation
-    console.log('Sign out clicked')
   }
 
   return (

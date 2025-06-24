@@ -8,7 +8,7 @@ import { Footer } from '@/components/footer';
 import { CTASection } from '@/components/cta-section';
 import { Linkedin, Instagram, Twitter, Facebook, Globe, Github } from 'lucide-react';
 import { AuthorArticlesGrid } from '@/components/blog/author-articles-grid';
-import { Metadata } from 'next';
+import { Metadata, Viewport } from 'next';
 
 const socialIcons: { [key: string]: React.ComponentType<any> } = {
   linkedin: Linkedin,
@@ -85,6 +85,11 @@ export async function generateMetadata({ params }: AuthorPageProps): Promise<Met
     }
   };
 }
+
+// Generate viewport configuration
+export const viewport: Viewport = {
+  themeColor: '#ffffff',
+};
 
 export default async function AuthorPage({ params }: AuthorPageProps) {
   const author = await getAuthorBySlug(params.slug);

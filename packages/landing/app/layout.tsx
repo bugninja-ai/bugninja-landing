@@ -1,21 +1,24 @@
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
 
 const inter = Inter({ subsets: ['latin'] })
 
+export const viewport: Viewport = {
+  themeColor: '#6c66ee',
+}
+
 export const metadata: Metadata = {
+  metadataBase: new URL('https://bugninja.ai'),
   title: {
     default: 'Bugninja - AI-powered E2E testing',
     template: '%s | Bugninja'
   },
   description: 'Test smarter, not harder with Bugninja. Your AI-powered E2E testing solution that helps you create and maintain tests more efficiently.',
-  themeColor: '#6c66ee',
   icons: {
     icon: '/favicon.png',
   },
   other: {
-    'theme-color': '#6c66ee',
     'msapplication-TileColor': '#6c66ee',
   },
   openGraph: {
