@@ -54,13 +54,15 @@ export function ArticleDetail({ article }: ArticleDetailProps) {
 
   const getAuthorProfilePicture = () => {
     const authorData = getAuthorData();
-    if (authorData?.profilePicture?.data?.attributes?.url) {
+    if (!authorData?.profilePicture) {
+      return '/blog/default-author.jpg';
+    }
+    // Check if it's a StrapiImage type
+    if ('data' in authorData.profilePicture) {
       return getStrapiImageUrl(authorData.profilePicture.data.attributes.url);
     }
-    if (authorData?.profilePicture?.url) {
-      return getStrapiImageUrl(authorData.profilePicture.url);
-    }
-    return '/blog/default-author.jpg';
+    // If it's a simple URL object
+    return getStrapiImageUrl(authorData.profilePicture.url);
   };
 
   const getAuthorSlug = () => {
