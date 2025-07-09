@@ -1,6 +1,8 @@
-# Bugninja Product
+# Bugninja Landing
 
-A full-stack application built with a modern microservices architecture using Docker containers, featuring a Next.js frontend, Strapi CMS, PostgreSQL database, and Umami analytics.
+A landing page and content management system built with a modern Docker-based architecture, featuring a Next.js frontend, Strapi CMS, and PostgreSQL database.
+
+![Bugninja Landing Page](image.png)
 
 ## 🏗️ Architecture Overview
 
@@ -10,27 +12,22 @@ This project uses a **monorepo structure** with multiple containers orchestrated
 
 | Container | Port | Purpose | Technology |
 |-----------|------|---------|------------|
-| **`app`** | 3002 | Main application frontend | Next.js (TypeScript) |
 | **`landing`** | 3001 | Marketing/landing page | Next.js (TypeScript) |
 | **`cms`** | 1337 | Content management system | Strapi |
 | **`db`** | 5432 | PostgreSQL database | PostgreSQL 16 |
-| **`umami`** | 8080 | Analytics tracking | Umami |
 
 ### Container Details
 
-- **`app`**: The main application frontend built with Next.js and TypeScript
-- **`landing`**: A separate landing page application for marketing purposes
+- **`landing`**: The main landing page application built with Next.js and TypeScript
 - **`cms`**: Strapi headless CMS for content management with PostgreSQL backend
-- **`db`**: PostgreSQL database serving multiple databases (webapp_skeleton, strapi, umami)
-- **`umami`**: Privacy-focused analytics platform for tracking user interactions
+- **`db`**: PostgreSQL database serving multiple databases (webapp_skeleton, strapi)
 
 ## 📦 Project Structure
 
 ```
-bugninja-product/
+bugninja-landing/
 ├── packages/
-│   ├── app/           # Main application
-│   ├── landing/       # Landing page
+│   ├── landing/       # Landing page application
 │   └── shared-ui/     # Shared UI components
 ├── cms/               # Strapi CMS configuration
 ├── infrastructure/    # Docker configurations
@@ -41,7 +38,7 @@ bugninja-product/
 
 ### Why Shared UI?
 
-The `packages/shared-ui` folder contains reusable React components that can be used by both the **app** and **landing** applications. This approach provides:
+The `packages/shared-ui` folder contains reusable React components that can be used by the **landing** application and potentially future applications. This approach provides:
 
 - **Code Reusability**: Common components (buttons, forms, layouts) are written once and used everywhere
 - **Design Consistency**: Ensures consistent styling and behavior across all applications
@@ -60,7 +57,7 @@ The `packages/shared-ui` folder contains reusable React components that can be u
 
 ```bash
 git clone <repository-url>
-cd bugninja-product
+cd bugninja-landing
 ```
 
 ### 2. Install Dependencies Locally
@@ -94,10 +91,8 @@ docker-compose ps
 
 ### 4. Access Applications
 
-- **App**: http://localhost:3002
-- **Landing**: http://localhost:3001
+- **Landing Page**: http://localhost:3001
 - **CMS Admin**: http://localhost:1337/admin
-- **Umami Analytics**: http://localhost:8080
 - **Database**: localhost:5432
 
 ## 🛠️ Development Commands
@@ -128,24 +123,20 @@ docker-compose build <service-name>
 
 ```bash
 # Development (runs locally, not in containers)
-npm run dev:app              # Start app only
-npm run dev:landing          # Start landing only
-npm run dev:all             # Start both frontend apps
+npm run dev                  # Start landing page
+npm run dev:landing          # Start landing page
 
 # Building
-npm run build:app           # Build app
-npm run build:landing       # Build landing
-npm run build:all          # Build all
+npm run build               # Build landing page
+npm run build:landing       # Build landing page
 
 # Linting
-npm run lint:app            # Lint app
-npm run lint:landing        # Lint landing
-npm run lint:all           # Lint all
+npm run lint                # Lint landing page
+npm run lint:landing        # Lint landing page
 
 # Type Checking
-npm run type-check:app      # Type check app
-npm run type-check:landing  # Type check landing
-npm run type-check:all     # Type check all
+npm run type-check          # Type check landing page
+npm run type-check:landing  # Type check landing page
 ```
 
 ### Package Management
@@ -154,14 +145,14 @@ When installing new packages:
 
 ```bash
 # 1. Install locally for linting/IDE support
-npm install <package-name> --workspace=@bugninja/app
+npm install <package-name> --workspace=@bugninja/landing
 
 # 2. Install in running container
-docker-compose exec app npm install <package-name>
+docker-compose exec landing npm install <package-name>
 
 # 3. If adding new dependencies, rebuild the container
-docker-compose build app
-docker-compose up -d app
+docker-compose build landing
+docker-compose up -d landing
 ```
 
 ### Database Operations
@@ -170,7 +161,7 @@ docker-compose up -d app
 # Access PostgreSQL
 docker-compose exec db psql -U postgres -d <database-name>
 
-# Available databases: webapp_skeleton, strapi, umami
+# Available databases: webapp_skeleton, strapi
 
 # Backup database
 docker-compose exec db pg_dump -U postgres <database-name> > backup.sql
@@ -186,7 +177,7 @@ docker-compose exec -T db psql -U postgres <database-name> < backup.sql
 Since the containers run in development mode with volume mounting:
 
 1. **Edit code locally** - Changes are automatically reflected in containers
-2. **Hot reload** - Both Next.js apps support hot reloading
+2. **Hot reload** - The Next.js landing page supports hot reloading
 3. **No restart needed** - Unless you're adding new dependencies or changing Docker configuration
 
 ### When to Restart Containers
@@ -199,10 +190,10 @@ Since the containers run in development mode with volume mounting:
 ### Adding New Dependencies
 
 ```bash
-# Example: Adding a new package to the app
-npm install react-query --workspace=@bugninja/app
-docker-compose exec app npm install react-query
-docker-compose restart app
+# Example: Adding a new package to the landing page
+npm install react-query --workspace=@bugninja/landing
+docker-compose exec landing npm install react-query
+docker-compose restart landing
 ```
 
 ## 🐛 Troubleshooting
@@ -211,7 +202,7 @@ docker-compose restart app
 
 1. **Linter errors but app works**: Ensure local packages are installed
 2. **Database connection issues**: Check if `db` container is healthy
-3. **Port conflicts**: Ensure ports 3001, 3002, 1337, 5432, 8080 are available
+3. **Port conflicts**: Ensure ports 3001, 1337, 5432 are available
 4. **Cache issues**: Try `docker-compose down -v` to remove volumes
 
 ### Debug Commands
@@ -227,7 +218,7 @@ docker-compose logs -f <service-name>
 docker-compose exec <service-name> sh
 
 # Check network connectivity
-docker-compose exec app ping db
+docker-compose exec landing ping db
 ```
 
 ## 📝 Environment Variables
@@ -238,7 +229,9 @@ Key environment variables are set in `docker-compose.yml`. For production deploy
 DATABASE_URL=postgresql://postgres:postgres@db:5432/webapp_skeleton
 ADMIN_JWT_SECRET=your-secure-secret
 STRAPI_JWT_SECRET=your-secure-secret
-APP_SECRET=your-secure-secret
+STRAPI_APP_KEYS=your-secure-app-keys
+API_TOKEN_SALT=your-secure-api-token-salt
+TRANSFER_TOKEN_SALT=your-secure-transfer-token-salt
 ```
 
 ## 🚀 Production Deployment
@@ -253,5 +246,4 @@ For production deployment:
 
 - [Next.js Documentation](https://nextjs.org/docs)
 - [Strapi Documentation](https://docs.strapi.io/)
-- [Docker Compose Documentation](https://docs.docker.com/compose/)
-- [Umami Documentation](https://umami.is/docs) 
+- [Docker Compose Documentation](https://docs.docker.com/compose/) 
