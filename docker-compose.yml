@@ -1,21 +1,4 @@
 services:
-  app:
-    image: node:21-alpine
-    ports:
-      - "3002:3002"
-    volumes:
-      - .:/workspace
-    working_dir: /workspace
-    environment:
-      - NODE_ENV=development
-      - NEXT_TELEMETRY_DISABLED=1
-      - WATCHPACK_POLLING=true
-      - NODE_OPTIONS=--no-deprecation
-    command: sh -c "npm install --no-package-lock && npm run dev:app"
-    networks:
-      - webapp-network
-    restart: unless-stopped
-
   landing:
     image: node:21-alpine
     ports:
@@ -32,28 +15,6 @@ services:
     networks:
       - webapp-network
     restart: unless-stopped
-
-  umami:
-    image: ghcr.io/umami-software/umami:postgresql-latest
-    ports:
-      - "8080:8080"
-    environment:
-      DATABASE_URL: postgresql://postgres:postgres@db:5432/umami
-      DATABASE_TYPE: postgresql
-      APP_SECRET: replace-me-with-a-random-string
-      PORT: 8080
-    depends_on: 
-      db:
-        condition: service_healthy
-    init: true
-    restart: always
-    networks:
-      - webapp-network
-    healthcheck:
-      test: ["CMD-SHELL", "curl http://localhost:8080/api/heartbeat"]
-      interval: 5s
-      timeout: 5s
-      retries: 5
 
   cms:
     build:
@@ -94,7 +55,7 @@ services:
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
-      - POSTGRES_MULTIPLE_DATABASES=webapp_skeleton,strapi,umami
+      - POSTGRES_MULTIPLE_DATABASES=webapp_skeleton,strapi
     networks:
       - webapp-network
     healthcheck:
