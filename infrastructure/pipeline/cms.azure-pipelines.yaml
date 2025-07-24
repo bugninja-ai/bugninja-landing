@@ -35,6 +35,7 @@ stages:
       inputs:
         command: build
         repository: $(_ACR_IMAGE_REPOSITORY)
+        buildContext: cms
         dockerfile: $(dockerfilePath)
         containerRegistry: $(_ACR_CONNECTION)
         tags: |
