@@ -76,7 +76,7 @@ export function TypographyShowcase() {
       <div className="space-y-4">
         <h3 className="text-lg font-medium">Blockquote</h3>
         <blockquote className="border-l-4 border-muted-foreground pl-4 italic">
-          "This is a blockquote. It's used to highlight important text or quotes from other sources."
+          &quot;This is a blockquote. It&apos;s used to highlight important text or quotes from other sources.&quot;
         </blockquote>
       </div>
 

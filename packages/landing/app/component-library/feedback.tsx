@@ -65,7 +65,7 @@ export function FeedbackShowcase() {
           <Alert variant="info">
             <Info className="h-4 w-4" />
             <AlertTitle>Information</AlertTitle>
-            <AlertDescription>Here's some useful information for you.</AlertDescription>
+            <AlertDescription>Here&apos;s some useful information for you.</AlertDescription>
           </Alert>
         </div>
       </div>
@@ -104,7 +104,7 @@ export function FeedbackShowcase() {
             <DialogHeader>
               <DialogTitle>Modal Title</DialogTitle>
               <DialogDescription>
-                This is a modal dialog. It's used for displaying content that requires user attention or interaction.
+                This is a modal dialog. It&apos;s used for displaying content that requires user attention or interaction.
               </DialogDescription>
             </DialogHeader>
           </DialogContent>
