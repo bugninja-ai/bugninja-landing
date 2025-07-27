@@ -14,10 +14,10 @@ variables:
 
 stages:
 - stage: Approval
-  condition: ne(variables['Build.Reason'], 'Manual')
   displayName: "Manual Approval"
   jobs:  
   - job: ManualApproval
+    condition: ne(variables['Build.Reason'], 'Manual')
     displayName: Waiting for manual approval
     pool:
       name: server
