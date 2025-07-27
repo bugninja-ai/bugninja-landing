@@ -33,7 +33,7 @@ stages:
   jobs:
   - job: DockerBuild
     displayName: Build Docker image
-    condition: or( eq(variables['Build.Reason'], 'Manual') or succeeded('ManualApproval'))
+    condition: or( eq(variables['Build.Reason'], 'Manual'), succeeded('ManualApproval'))
     pool:
       name: $(_PIPELINE_POOL)
     steps:
