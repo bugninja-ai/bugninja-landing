@@ -2,6 +2,7 @@ name: "$(TeamProject) for $(Build.DefinitionName) $(_NEXT_PUBLIC_APP_ENV)"
 
 trigger:
   - develop
+  - main
 
 resources:
 - repo: self
@@ -12,8 +13,9 @@ variables:
   currentDate: $[ format('{0:yyyy}{0:MM}{0:dd}', pipeline.startTime) ]
 
 stages:
-- stage: BuildPush
-  displayName: Build and push stage
+- stage: Approval
+  condition: ne(variables['Build.Reason'], 'Manual')
+  displayName: "Manual Approval"
   jobs:  
   - job: ManualApproval
     displayName: Waiting for manual approval
@@ -24,9 +26,14 @@ stages:
       timeoutInMinutes: 30
       inputs:
         instructions: 'Please approve to start image build and container app update'
+
+- stage: Build
+  displayName: "Build image"
+  dependsOn: Approval
+  jobs:
   - job: DockerBuild
     displayName: Build Docker image
-    dependsOn: ManualApproval
+    condition: or( eq(variables['Build.Reason'], 'Manual') or succeeded('ManualApproval'))
     pool:
       name: $(_PIPELINE_POOL)
     steps:
