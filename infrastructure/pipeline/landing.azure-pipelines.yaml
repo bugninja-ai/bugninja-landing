@@ -10,7 +10,7 @@ resources:
 parameters:
   - name: update
     type: boolean
-    default: true
+    default: false
 
 variables:
   dockerfilePath: '$(Build.SourcesDirectory)/infrastructure/docker/landing.Dockerfile'
