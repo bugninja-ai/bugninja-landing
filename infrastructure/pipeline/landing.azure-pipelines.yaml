@@ -7,6 +7,11 @@ trigger:
 resources:
 - repo: self
 
+parameters:
+  - name: update
+    type: boolean
+    default: true
+
 variables:
   dockerfilePath: '$(Build.SourcesDirectory)/infrastructure/docker/landing.Dockerfile'
   tag: '$(Build.BuildId)'
@@ -58,11 +63,22 @@ stages:
         tags: |
          latest
          $(currentDate)-$(tag)
-    #- task: AzureCLI@2
-    #  displayName: Update container app
-    #  inputs:
-    #    azureSubscription: $(_AZURE_SUBSCRIPTION)
-    #    scriptType: 'bash'
-    #    scriptLocation: 'inlineScript'
-    #    inlineScript: |
-    #      az containerapp update --resource-group "$(_RESOURCE_GROUP)" --name "$(_ACR_IMAGE_REPOSITORY)-app" -i $(_ACR_HOST)/$(_ACR_IMAGE_REPOSITORY):$(currentDate)-$(tag)
+
+- stage: Update
+  displayName: "Update containerapp"
+  dependsOn: Build
+  jobs:  
+  - job: ManualApproval
+    condition: or( eq('${{ parameters.update }}', 'true'), succeeded('ManualApproval'))
+    displayName: Waiting for manual approval
+    pool:
+      name: $(_PIPELINE_POOL)
+    steps:
+    - task: AzureCLI@2
+      displayName: Update container app
+      inputs:
+        azureSubscription: $(_AZURE_SUBSCRIPTION)
+        scriptType: 'bash'
+        scriptLocation: 'inlineScript'
+        inlineScript: |
+          az containerapp update --resource-group "$(_RESOURCE_GROUP)" --name "$(_ACR_IMAGE_REPOSITORY)-app" -i $(_ACR_HOST)/$(_ACR_IMAGE_REPOSITORY):$(currentDate)-$(tag)
