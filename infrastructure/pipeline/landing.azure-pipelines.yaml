@@ -1,0 +1,84 @@
+name: "$(TeamProject) for $(Build.DefinitionName) $(_NEXT_PUBLIC_APP_ENV)"
+
+trigger:
+  - develop
+  - main
+
+resources:
+- repo: self
+
+parameters:
+  - name: update
+    type: boolean
+    default: false
+
+variables:
+  dockerfilePath: '$(Build.SourcesDirectory)/infrastructure/docker/landing.Dockerfile'
+  tag: '$(Build.BuildId)'
+  currentDate: $[ format('{0:yyyy}{0:MM}{0:dd}', pipeline.startTime) ]
+
+stages:
+- stage: Approval
+  displayName: "Manual Approval"
+  jobs:  
+  - job: ManualApproval
+    condition: ne(variables['Build.Reason'], 'Manual')
+    displayName: Waiting for manual approval
+    pool:
+      name: server
+    steps:
+    - task: ManualValidation@0
+      timeoutInMinutes: 30
+      inputs:
+        instructions: 'Please approve to start image build and container app update'
+
+- stage: Build
+  displayName: "Build image"
+  dependsOn: Approval
+  jobs:
+  - job: DockerBuild
+    displayName: Build Docker image
+    condition: or( eq(variables['Build.Reason'], 'Manual'), succeeded('ManualApproval'))
+    pool:
+      name: $(_PIPELINE_POOL)
+    steps:
+    - task: Docker@2
+      displayName: Build $(_ACR_IMAGE_REPOSITORY)
+      inputs:
+        command: build
+        repository: $(_ACR_IMAGE_REPOSITORY)
+        buildContext: $(System.DefaultWorkingDirectory)
+        dockerfile: $(dockerfilePath)
+        containerRegistry: $(_ACR_CONNECTION)
+        tags: |
+         latest
+         $(currentDate)-$(tag)
+        arguments: '--build-arg=NEXT_PUBLIC_STRAPI_API_TOKEN=$(_NEXT_PUBLIC_STRAPI_API_TOKEN) --build-arg=NEXT_PUBLIC_STRAPI_URL=$(_NEXT_PUBLIC_STRAPI_URL) --build-arg=STRAPI_INTERNAL_URL=$(_STRAPI_INTERNAL_URL) '
+    - task: Docker@2
+      displayName: Push $(_ACR_IMAGE_REPOSITORY)
+      inputs:
+        command: push
+        repository: $(_ACR_IMAGE_REPOSITORY)
+        containerRegistry: $(_ACR_CONNECTION)
+        tags: |
+         latest
+         $(currentDate)-$(tag)
+
+- stage: Update
+  displayName: "Update containerapp"
+  dependsOn: Build
+  jobs:  
+  - job: ManualApproval
+    condition: or( eq('${{ parameters.update }}', 'true'), succeeded('ManualApproval'))
+    displayName: Waiting for manual approval
+    pool:
+      name: $(_PIPELINE_POOL)
+    steps:
+    - task: AzureCLI@2
+      displayName: Update container app
+      inputs:
+        azureSubscription: $(_AZURE_SUBSCRIPTION)
+        scriptType: 'bash'
+        scriptLocation: 'inlineScript'
+        inlineScript: |
+          az containerapp update --resource-group "$(_RESOURCE_GROUP)" --name "$(_ACR_IMAGE_REPOSITORY)-app" -i $(_ACR_HOST)/$(_ACR_IMAGE_REPOSITORY):$(currentDate)-$(tag)

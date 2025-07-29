@@ -15,7 +15,7 @@ export default function Terms() {
 
             <section className="mb-8">
               <h2 className="display-font text-2xl font-semibold mb-4">1. Acceptance of Terms</h2>
-              <p>By accessing and using Bugninja's services, you agree to be bound by these Terms and Conditions. If you do not agree to these terms, please do not use our services.</p>
+              <p>By accessing and using Bugninja&apos;s services, you agree to be bound by these Terms and Conditions. If you do not agree to these terms, please do not use our services.</p>
             </section>
 
             <section className="mb-8">
