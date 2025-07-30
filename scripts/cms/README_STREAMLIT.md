@@ -11,32 +11,29 @@ cd scripts/cms
 pip install -r requirements.txt
 ```
 
-### 2. Set Up Environment Variables
+### 2. Set Up Secrets
 
-Create a `.env` file in the `scripts/cms` directory with:
-
-```env
-# Strapi Configuration
-STRAPI_API_URL=http://localhost:1337
-STRAPI_API_TOKEN=your-strapi-api-token
-
-# Azure OpenAI Configuration  
-AZURE_OPENAI_API_KEY=your-azure-openai-key
-AZURE_OPENAI_ENDPOINT=your-azure-openai-endpoint
-```
-
-### 3. Set Up Password Protection
-
-Create a `.streamlit/secrets.toml` file in the `scripts/cms` directory:
+Create a `.streamlit/secrets.toml` file in the `scripts/cms` directory with all your credentials:
 
 ```toml
-# Password for the Article Generator app
+# Streamlit Secrets
+# NEVER COMMIT THIS FILE TO GIT
+
+# App password
 password = "your-secure-password"
+
+# Strapi CMS Configuration
+STRAPI_API_URL = "http://localhost:1337"
+STRAPI_API_TOKEN = "your_strapi_api_token_here"
+
+# Azure OpenAI Configuration
+AZURE_OPENAI_API_KEY = "your_azure_openai_api_key_here"
+AZURE_OPENAI_ENDPOINT = "https://your-resource.openai.azure.com/"
 ```
 
 **⚠️ Security Note**: Change the default password to something secure!
 
-### 4. Run the App
+### 3. Run the App
 
 ```bash
 streamlit run article_generator_app.py

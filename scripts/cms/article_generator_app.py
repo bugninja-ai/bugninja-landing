@@ -15,18 +15,14 @@ import streamlit as st
 import tempfile
 import shutil
 from datetime import datetime
-from dotenv import load_dotenv
 from openai import AzureOpenAI
 from urllib.parse import urlparse
 
-# Load environment variables
-load_dotenv()
-
-# Configuration - using the correct environment variables from your .env file
-STRAPI_API_URL = os.getenv("STRAPI_API_URL", "http://localhost:1337")
-STRAPI_API_TOKEN = os.getenv("STRAPI_API_TOKEN")
-AZURE_OPENAI_API_KEY = os.getenv("AZURE_OPENAI_API_KEY")
-AZURE_OPENAI_ENDPOINT = os.getenv("AZURE_OPENAI_ENDPOINT")
+# Configuration - using Streamlit secrets
+STRAPI_API_URL = st.secrets.get("STRAPI_API_URL", "http://localhost:1337")
+STRAPI_API_TOKEN = st.secrets.get("STRAPI_API_TOKEN")
+AZURE_OPENAI_API_KEY = st.secrets.get("AZURE_OPENAI_API_KEY")
+AZURE_OPENAI_ENDPOINT = st.secrets.get("AZURE_OPENAI_ENDPOINT")
 
 # Ensure we have the /api suffix for API calls if not already present
 if STRAPI_API_URL and not STRAPI_API_URL.endswith("/api"):
@@ -799,38 +795,44 @@ def main():
     if not check_password():
         st.stop()
 
-    # Check for required environment variables
-    missing_vars = []
-    if not STRAPI_API_URL:
-        missing_vars.append("STRAPI_API_URL")
-    if not STRAPI_API_TOKEN:
-        missing_vars.append("STRAPI_API_TOKEN")
-    if not AZURE_OPENAI_API_KEY:
-        missing_vars.append("AZURE_OPENAI_API_KEY")
-    if not AZURE_OPENAI_ENDPOINT:
-        missing_vars.append("AZURE_OPENAI_ENDPOINT")
+    # Check for required secrets
+    missing_secrets = []
+    required_secrets = [
+        "STRAPI_API_TOKEN",
+        "AZURE_OPENAI_API_KEY",
+        "AZURE_OPENAI_ENDPOINT",
+    ]
+    for secret in required_secrets:
+        if not st.secrets.get(secret):
+            missing_secrets.append(secret)
 
-    if missing_vars:
+    if missing_secrets:
         st.error("🔧 Configuration Error")
-        st.markdown("**Missing environment variables:**")
-        for var in missing_vars:
-            st.markdown(f"- `{var}`")
+        st.markdown("**Missing secrets in `.streamlit/secrets.toml`:**")
+        for secret in missing_secrets:
+            st.markdown(f"- `{secret}`")
 
         st.markdown("### 📝 Setup Instructions")
-        st.markdown("1. Create a `.env` file in the `scripts/cms` directory")
-        st.markdown("2. Add the following variables:")
+        st.markdown(
+            "1. Create a `.streamlit/secrets.toml` file in the `scripts/cms` directory."
+        )
+        st.markdown("2. Add the missing secrets to this file:")
 
         st.code(
-            """# Strapi Configuration
-STRAPI_API_URL=http://localhost:1337
-STRAPI_API_TOKEN=your-strapi-api-token
+            f"""# Strapi Configuration
+STRAPI_API_URL = "http://localhost:1337"
+STRAPI_API_TOKEN = "your-strapi-api-token"
 
 # Azure OpenAI Configuration  
-AZURE_OPENAI_API_KEY=your-azure-openai-key
-AZURE_OPENAI_ENDPOINT=your-azure-openai-endpoint"""
+AZURE_OPENAI_API_KEY = "your-azure-openai-key"
+AZURE_OPENAI_ENDPOINT = "your-azure-openai-endpoint"
+
+# App Password
+password = "your-password"
+"""
         )
 
-        st.markdown("3. Restart the app")
+        st.markdown("3. Restart the app.")
         st.stop()
 
     # Initialize session state

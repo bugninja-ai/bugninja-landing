@@ -21,19 +21,16 @@ pip3 install -r requirements.txt
 
 # Check if .env file exists
 if [ ! -f .env ]; then
-    echo "⚠️ .env file not found. Creating template..."
-    cat > .env << EOL
-# Strapi Configuration
-STRAPI_API_URL=http://localhost:1337
-STRAPI_API_TOKEN=your-strapi-api-token-here
-
-# Azure OpenAI Configuration  
-AZURE_OPENAI_API_KEY=your-azure-openai-key-here
-AZURE_OPENAI_ENDPOINT=your-azure-openai-endpoint-here
-EOL
-    echo "📝 Please edit the .env file with your actual credentials before running the app."
-    echo "💡 You can find your Strapi API token in the Strapi admin panel under Settings > API Tokens"
-    exit 1
+    echo "⚠️ .env file not found. Creating from template..."
+    if [ -f env.example ]; then
+        cp env.example .env
+        echo "📝 Please edit the .env file with your actual credentials before running the app."
+        echo "💡 You can find your Strapi API token in the Strapi admin panel under Settings > API Tokens"
+        exit 1
+    else
+        echo "❌ env.example file not found. Please create .env file manually."
+        exit 1
+    fi
 fi
 
 # Note: Images are now uploaded through the web interface, no local directory needed
