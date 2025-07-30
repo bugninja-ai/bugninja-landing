@@ -45,9 +45,9 @@ stages:
 - stage: Update
   displayName: "Update containerapp"
   dependsOn: Build
+  condition: succeeded('Build')
   jobs:  
   - job: Update
-    condition: succeeded('Build')
     displayName: Waiting for manual approval
     pool:
       name: $(_PIPELINE_POOL)
