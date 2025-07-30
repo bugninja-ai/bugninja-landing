@@ -31,7 +31,7 @@ bugninja-landing/
 │   └── shared-ui/     # Shared UI components
 ├── cms/               # Strapi CMS configuration
 ├── infrastructure/    # Docker configurations
-├── scripts/          # Utility scripts
+├── scripts/          # Utility scripts and article generator
 ├── docker-compose.yml # Container orchestration
 └── package.json      # Root workspace configuration
 ```
@@ -242,8 +242,29 @@ For production deployment:
 2. Build production images: `docker-compose -f docker-compose.prod.yml build`
 3. Deploy: `docker-compose -f docker-compose.prod.yml up -d`
 
+## 📝 Article Generator
+
+This project includes a user-friendly Streamlit app for generating SEO-optimized blog articles:
+
+### Quick Start
+```bash
+cd scripts/cms
+chmod +x start_app.sh
+./start_app.sh
+```
+
+The app provides:
+- **Non-technical interface** for content creation
+- **Author management** from CMS
+- **SEO optimization** with meta tags and structured data  
+- **Complete article preview** before publishing
+- **Direct CMS upload** functionality
+
+For detailed instructions, see [`scripts/cms/README_STREAMLIT.md`](scripts/cms/README_STREAMLIT.md)
+
 ## 📚 Additional Resources
 
 - [Next.js Documentation](https://nextjs.org/docs)
 - [Strapi Documentation](https://docs.strapi.io/)
-- [Docker Compose Documentation](https://docs.docker.com/compose/) 
+- [Docker Compose Documentation](https://docs.docker.com/compose/)
+- [Streamlit Documentation](https://docs.streamlit.io/) 

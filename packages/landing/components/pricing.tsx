@@ -63,10 +63,10 @@ export function Pricing() {
             <SecondaryButton className="h-14" onClick={handleBookMeeting}>Get started</SecondaryButton>
           </div>
         </div>
-        {/* Paid Plan */}
+        {/* Custom Plan */}
         <div ref={paidRef} className="flex flex-col bg-[url('/bg-img.png')] bg-cover bg-right text-primary-foreground rounded-2xl p-8 items-center shadow-lg">
           <h3 className="display-font text-2xl font-semibold mb-2">Pro</h3>
-          <div className="display-font text-4xl font-bold mb-4">$399<span className="text-base font-normal">/mo</span></div>
+          <div className="display-font text-4xl font-bold mb-4">Custom Price</div>
           <ul className="mb-6 space-y-2 text-center">
             <li className="flex items-center justify-center gap-2"><Check className="h-4 w-4" /> CI/CD integration</li>
             <li className="flex items-center justify-center gap-2"><Check className="h-4 w-4" /> Priority email & chat support</li>
@@ -75,7 +75,7 @@ export function Pricing() {
             <li className="flex items-center justify-center gap-2"><Check className="h-4 w-4" /> Scheduled runs</li>            
           </ul>
           <div className="flex-1 w-full flex items-end">
-            <CTAButtonOnPrimary className="w-full h-14" onClick={handleBookMeeting}>Subscribe to Pro</CTAButtonOnPrimary>
+            <CTAButtonOnPrimary className="w-full h-14" onClick={handleBookMeeting}>Get Custom Quote</CTAButtonOnPrimary>
           </div>
         </div>
       </div>

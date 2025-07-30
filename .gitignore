@@ -5,3 +5,5 @@ node_modules
 edge-function-bash-scripts/
 *.csv
 *.log
+
+.DS_Store
