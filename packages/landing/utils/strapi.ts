@@ -60,7 +60,7 @@ export async function getArticleBySlug(slug: string): Promise<SingleArticleRespo
   // Get all articles with basic fields to find the matching slug
   // Note: Using manual filtering instead of Strapi filters due to potential encoding issues
   const allArticles = await fetchAPI<ArticleListResponse>(
-    `articles?fields[0]=slug&fields[1]=id`
+    `articles?fields[0]=slug&fields[1]=id&pagination[pageSize]=-1`
   );
   
   // Find the article by slug manually
