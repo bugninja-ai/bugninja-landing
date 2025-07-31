@@ -1,16 +1,10 @@
 name: "$(TeamProject) for $(Build.DefinitionName) $(_NEXT_PUBLIC_APP_ENV)"
 
 trigger:
-  - develop
   - main
 
 resources:
 - repo: self
-
-parameters:
-  - name: update
-    type: boolean
-    default: false
 
 variables:
   dockerfilePath: '$(Build.SourcesDirectory)/infrastructure/docker/landing.Dockerfile'
@@ -18,27 +12,11 @@ variables:
   currentDate: $[ format('{0:yyyy}{0:MM}{0:dd}', pipeline.startTime) ]
 
 stages:
-- stage: Approval
-  displayName: "Manual Approval"
-  jobs:  
-  - job: ManualApproval
-    condition: ne(variables['Build.Reason'], 'Manual')
-    displayName: Waiting for manual approval
-    pool:
-      name: server
-    steps:
-    - task: ManualValidation@0
-      timeoutInMinutes: 30
-      inputs:
-        instructions: 'Please approve to start image build and container app update'
-
 - stage: Build
   displayName: "Build image"
-  dependsOn: Approval
   jobs:
   - job: DockerBuild
     displayName: Build Docker image
-    condition: or( eq(variables['Build.Reason'], 'Manual'), succeeded('ManualApproval'))
     pool:
       name: $(_PIPELINE_POOL)
     steps:
@@ -67,9 +45,9 @@ stages:
 - stage: Update
   displayName: "Update containerapp"
   dependsOn: Build
+  condition: succeeded('Build')
   jobs:  
-  - job: ManualApproval
-    condition: or( eq('${{ parameters.update }}', 'true'), succeeded('ManualApproval'))
+  - job: Update
     displayName: Waiting for manual approval
     pool:
       name: $(_PIPELINE_POOL)
