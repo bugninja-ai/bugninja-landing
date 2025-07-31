@@ -42,9 +42,24 @@ async function getBlogData() {
       getArticles(1, 6)
     ]);
 
+    // Debug logging
+    console.log('Featured articles count:', featuredArticles.data.length);
+    console.log('Featured articles:', featuredArticles.data.map(a => ({ id: a.id, title: a.attributes.title, slug: a.attributes.slug })));
+    console.log('Regular articles count:', articles.data.length);
+    console.log('Regular articles:', articles.data.map(a => ({ id: a.id, title: a.attributes.title, slug: a.attributes.slug })));
+
+    const featuredArticle = featuredArticles.data[0];
+    
+    // Filter out the featured article from the grid to avoid duplication
+    const gridArticles = featuredArticle 
+      ? articles.data.filter(article => article.id !== featuredArticle.id)
+      : articles.data;
+
+    console.log('Grid articles after deduplication:', gridArticles.length);
+
     return {
-      featuredArticle: featuredArticles.data[0],
-      articles: articles.data
+      featuredArticle,
+      articles: gridArticles
     };
   } catch (error) {
     console.error('Error fetching blog data:', error);

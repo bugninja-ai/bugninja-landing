@@ -70,6 +70,15 @@ Follow these guidelines:
 12. ALWAYS use https://bugninja.ai as the base domain for all structured data and canonical URLs.
 13. DO NOT GENERATE CTAs and references in the markdown article field since those are generated in another field.
 
+WRITING STYLE REQUIREMENTS:
+- USE SENTENCE CASE for all headings and titles (first word capitalized, rest lowercase unless proper nouns)
+- Examples: "Why Selenium is outdated", "How to improve testing workflows", "Benefits of AI-powered testing"
+- AVOID title case like "Why Selenium Is Outdated" or "How To Improve Testing Workflows"
+- Ensure descriptive content paragraphs are SUBSTANTIALLY LONGER than headings
+- Each section should have AT LEAST 2-3 full paragraphs (100-200 words minimum) before any subheading
+- AVOID creating articles that look like a list of titles - prioritize substantial explanatory content
+- Balance heading frequency: don't overuse headings, let content breathe with longer descriptive sections
+
 IMPORTANT SEO CHARACTER LIMITS:
 - Meta Title: Maximum 60 characters (will be truncated in search results if longer)
 - Meta Description / Summary: Maximum 160 characters (will be truncated in search results if longer)

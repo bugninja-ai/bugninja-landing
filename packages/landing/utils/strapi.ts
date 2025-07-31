@@ -57,11 +57,18 @@ export async function getArticleBySlug(slug: string): Promise<SingleArticleRespo
   // URL decode the slug in case it's encoded
   const decodedSlug = decodeURIComponent(slug);
   
+  console.log(`🔍 Looking for article with slug: "${decodedSlug}"`);
+  
   // Get all articles with basic fields to find the matching slug
   // Note: Using manual filtering instead of Strapi filters due to potential encoding issues
   const allArticles = await fetchAPI<ArticleListResponse>(
     `articles?fields[0]=slug&fields[1]=id&pagination[pageSize]=-1`
   );
+  
+  console.log(`📝 Found ${allArticles.data.length} articles in CMS:`);
+  allArticles.data.forEach(article => {
+    console.log(`   ID: ${article.id}, Slug: "${article.attributes.slug}"`);
+  });
   
   // Find the article by slug manually
   const matchingArticle = allArticles.data.find(article => 
@@ -69,8 +76,11 @@ export async function getArticleBySlug(slug: string): Promise<SingleArticleRespo
   );
   
   if (!matchingArticle) {
+    console.log(`❌ No article found with slug "${decodedSlug}"`);
     throw new Error(`Article with slug "${decodedSlug}" not found`);
   }
+  
+  console.log(`✅ Found matching article: ID ${matchingArticle.id}`);
   
   // Fetch the full article by ID with all populated fields including author details
   const fullArticle = await fetchAPI<{data: {id: string, attributes: any}}>(
