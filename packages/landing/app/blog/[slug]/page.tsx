@@ -3,7 +3,7 @@ import { PageHeader } from '@/components/page-header'
 import { Footer } from '@/components/footer'
 import { notFound } from 'next/navigation'
 import { Divider } from '@/components/divider'
-import { getArticleBySlug } from '@/utils/strapi'
+import { getArticleBySlug, getArticles } from '@/utils/strapi'
 import { Metadata } from 'next'
 
 interface ArticlePageProps {
@@ -11,6 +11,27 @@ interface ArticlePageProps {
     slug: string
   }
 }
+
+// Generate static params for all articles
+export async function generateStaticParams() {
+  try {
+    // Fetch all articles to get their slugs
+    const articlesData = await getArticles(1, 100); // Get more articles to ensure we capture all
+    
+    console.log(`🔧 Generating static params for ${articlesData.data.length} articles`);
+    
+    return articlesData.data.map((article) => ({
+      slug: article.attributes.slug,
+    }));
+  } catch (error) {
+    console.error('Error generating static params:', error);
+    // Return empty array to avoid build failures
+    return [];
+  }
+}
+
+// Allow dynamic params for new articles not generated at build time
+export const dynamicParams = true;
 
 async function getArticle(slug: string) {
   try {
