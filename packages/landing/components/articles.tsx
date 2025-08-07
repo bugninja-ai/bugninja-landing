@@ -4,18 +4,28 @@ import { SecondaryButton } from './secondary-button';
 import Link from 'next/link';
 import { cn } from '@bugninja/shared-ui';
 import { Button } from '@bugninja/shared-ui/components/ui/button';
-import { getArticles } from '@/utils/strapi';
+import { getAllArticles } from '@/utils/strapi';
 import type { Article } from '@/types/blog';
 import { ArticlesClient } from './articles-client';
 
 export async function Articles() {
   let articles: Article[] = [];
 
-      try {
-        const response = await getArticles(1, 3);
-    articles = response.data;
-      } catch (error) {
-        console.error('Failed to fetch articles:', error);
+  try {
+    // Get all articles and sort by date to get the 3 most recent
+    const response = await getAllArticles();
+    const sortedArticles = response.data.sort((a, b) => {
+      const dateA = new Date(a.attributes.publishDate || a.attributes.createdAt);
+      const dateB = new Date(b.attributes.publishDate || b.attributes.createdAt);
+      return dateB.getTime() - dateA.getTime(); // Most recent first
+    });
+    
+    // Take only the 3 most recent articles
+    articles = sortedArticles.slice(0, 3);
+    
+    console.log(`🏠 Homepage: Showing ${articles.length} most recent articles`);
+  } catch (error) {
+    console.error('Failed to fetch articles:', error);
     articles = [];
   }
 

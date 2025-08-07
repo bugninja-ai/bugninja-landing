@@ -78,6 +78,7 @@ WRITING STYLE REQUIREMENTS:
 - Each section should have AT LEAST 2-3 full paragraphs (100-200 words minimum) before any subheading
 - AVOID creating articles that look like a list of titles - prioritize substantial explanatory content
 - Balance heading frequency: don't overuse headings, let content breathe with longer descriptive sections
+- DO NOT SHOW the CTA at the end of the article, it will be shown in the CTA section.
 
 IMPORTANT SEO CHARACTER LIMITS:
 - Meta Title: Maximum 60 characters (will be truncated in search results if longer)

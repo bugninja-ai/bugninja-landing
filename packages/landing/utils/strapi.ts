@@ -51,17 +51,32 @@ export async function getArticles(page = 1, pageSize = 10): Promise<ArticleListR
 }
 
 /**
+ * Get ALL articles without pagination limits
+ */
+export async function getAllArticles(): Promise<ArticleListResponse> {
+  return fetchAPI<ArticleListResponse>(
+    `articles?populate=*&sort[0]=publishDate:desc&pagination[pageSize]=-1`
+  );
+}
+
+/**
  * Get a single article by slug
  */
 export async function getArticleBySlug(slug: string): Promise<SingleArticleResponse> {
   // URL decode the slug in case it's encoded
   const decodedSlug = decodeURIComponent(slug);
   
-  // Get all articles with basic fields to find the matching slug
-  // Note: Using manual filtering instead of Strapi filters due to potential encoding issues
+  console.log(`🔍 getArticleBySlug looking for: "${decodedSlug}"`);
+  
+  // Use the SAME API call as getAllArticles to ensure consistency
   const allArticles = await fetchAPI<ArticleListResponse>(
-    `articles?fields[0]=slug&fields[1]=id&pagination[pageSize]=-1`
+    `articles?populate=*&sort[0]=publishDate:desc&pagination[pageSize]=-1`
   );
+  
+  console.log(`📝 getArticleBySlug found ${allArticles.data.length} articles:`);
+  allArticles.data.forEach(article => {
+    console.log(`   ID: ${article.id}, Slug: "${article.attributes.slug}"`);
+  });
   
   // Find the article by slug manually
   const matchingArticle = allArticles.data.find(article => 
@@ -69,8 +84,11 @@ export async function getArticleBySlug(slug: string): Promise<SingleArticleRespo
   );
   
   if (!matchingArticle) {
+    console.log(`❌ getArticleBySlug: No match found for "${decodedSlug}"`);
     throw new Error(`Article with slug "${decodedSlug}" not found`);
   }
+  
+  console.log(`✅ getArticleBySlug: Found article ID ${matchingArticle.id}`);
   
   // Fetch the full article by ID with all populated fields including author details
   const fullArticle = await fetchAPI<{data: {id: string, attributes: any}}>(

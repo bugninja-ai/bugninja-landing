@@ -4,8 +4,11 @@ import { Divider } from '@/components/divider'
 import { PageHeader } from '@/components/page-header'
 import { Footer } from '@/components/footer'
 import { CTASection } from '@/components/cta-section'
-import { getArticles, getFeaturedArticles } from '@/utils/strapi'
+import { getAllArticles, getFeaturedArticles } from '@/utils/strapi'
 import { Metadata } from 'next'
+
+// Force dynamic rendering to always fetch fresh data
+export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
   title: 'Blog - AI Testing Insights & Tutorials | Bugninja',
@@ -37,17 +40,25 @@ export const metadata: Metadata = {
 
 async function getBlogData() {
   try {
-    const [featuredArticles, articles] = await Promise.all([
-      getFeaturedArticles(1),
-      getArticles(1, 6)
-    ]);
-
-    const featuredArticle = featuredArticles.data[0];
+    // Get ALL articles without any limits
+    const allArticles = await getAllArticles(); // Get ALL articles without pagination
+    
+    // Find the most recent article by creation date (including hours/minutes)
+    const sortedArticles = allArticles.data.sort((a, b) => {
+      const dateA = new Date(a.attributes.publishDate || a.attributes.createdAt);
+      const dateB = new Date(b.attributes.publishDate || b.attributes.createdAt);
+      return dateB.getTime() - dateA.getTime(); // Most recent first
+    });
+    
+    // The most recent article becomes the featured article
+    const featuredArticle = sortedArticles[0];
     
     // Filter out the featured article from the grid to avoid duplication
-    const gridArticles = featuredArticle 
-      ? articles.data.filter(article => article.id !== featuredArticle.id)
-      : articles.data;
+    const gridArticles = sortedArticles.slice(1); // All articles except the most recent
+
+    console.log(`📝 Total articles: ${allArticles.data.length}`);
+    console.log(`🎯 Featured article: ${featuredArticle?.attributes?.title || 'None'} (${featuredArticle?.attributes?.publishDate || featuredArticle?.attributes?.createdAt})`);
+    console.log(`📋 Grid articles: ${gridArticles.length}`);
 
     return {
       featuredArticle,
