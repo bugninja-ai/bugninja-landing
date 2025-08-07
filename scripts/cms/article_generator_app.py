@@ -207,43 +207,44 @@ def generate_seo_content(topic, author, cta_text, cta_link, references_list):
         progress_bar.progress(50)
 
         # Create the prompt
-        json_template = """
-        {
-          "article": {
+        current_date = datetime.now().strftime("%Y-%m-%d")
+        json_template = f"""
+        {{
+          "article": {{
             "title": "SEO-optimized title with primary keyword",
             "slug": "url-friendly-slug-with-keyword",
             "summary": "Compelling 1-2 sentence summary with primary keyword",
             "content": "Full markdown content with H2 and H3 headings (NO H1), lists, examples, etc.",
             "readingTime": 5,
             "ctas": [
-              {
+              {{
                 "text": "Call to Action Text",
                 "url": "https://example.com/action",
                 "type": "primary",
                 "newTab": true,
                 "icon": "arrow-right"
-              }
+              }}
             ],
             "references": [
-              {
+              {{
                 "title": "Reference Title",
                 "url": "https://example.com/reference",
                 "authors": "Reference Authors",
                 "publisher": "Publisher Name",
-                "publishDate": "2023-01-01",
+                "publishDate": "{current_date}",
                 "description": "Reference description",
                 "referenceType": "Website"
-              }
+              }}
             ]
-          },
-          "seo": {
+          }},
+          "seo": {{
             "metaTitle": "Keyword-Rich Title Under 60 Characters",
             "metaDescription": "Compelling meta description with primary keyword that stays under 160 characters for optimal display in search results.",
             "keywords": "keyword1, keyword2, keyword3, keyword4, keyword5",
             "metaRobots": "index, follow",
             "canonicalURL": "https://bugninja.ai/blog/article-slug",
             "preventIndexing": false,
-            "structuredData": {
+            "structuredData": {{
               "@context": "https://schema.org",
               "@type": "Article",
               "headline": "Article headline (same as title)",
@@ -251,31 +252,31 @@ def generate_seo_content(topic, author, cta_text, cta_link, references_list):
               "image": "URL to the featured image (will be filled automatically)",
               "datePublished": "Publication date (will be filled automatically)",
               "dateModified": "Last update date (will be filled automatically)",
-              "author": {
+              "author": {{
                 "@type": "Person",
                 "name": "Author name (will be filled automatically)"
-              },
-              "mainEntityOfPage": {
+              }},
+              "mainEntityOfPage": {{
                 "@type": "WebPage",
                 "@id": "URL to the article (will be filled automatically)"
-              }
-            },
+              }}
+            }},
             "metaSocial": [
-              {
+              {{
                 "socialNetwork": "Facebook",
                 "title": "Facebook Title",
                 "description": "Facebook Description",
                 "image": "Image ID for Facebook sharing (will be filled automatically with featured image)"
-              },
-              {
+              }},
+              {{
                 "socialNetwork": "Twitter",
                 "title": "Twitter Title",
                 "description": "Twitter Description",
                 "image": "Image ID for Twitter sharing (will be filled automatically with featured image)"
-              }
+              }}
             ]
-          },
-          "author": {
+          }},
+          "author": {{
             "name": "Author Name",
             "slug": "author-slug",
             "email": "author@example.com",
@@ -283,43 +284,43 @@ def generate_seo_content(topic, author, cta_text, cta_link, references_list):
             "role": "Author Role",
             "expertise": "Author Expertise",
             "socialLinks": [
-              {
+              {{
                 "platform": "Twitter",
                 "url": "https://twitter.com/username",
                 "username": "username"
-              },
-              {
+              }},
+              {{
                 "platform": "LinkedIn",
                 "url": "https://linkedin.com/in/username",
                 "username": "username"
-              }
+              }}
             ]
-          },
+          }},
           "categories": [
-            {
+            {{
               "name": "Primary Category",
               "slug": "primary-category",
               "description": "Category description"
-            },
-            {
+            }},
+            {{
               "name": "Secondary Category",
               "slug": "secondary-category",
               "description": "Category description"
-            }
+            }}
           ],
           "tags": [
-            {
+            {{
               "name": "Primary Tag",
               "slug": "primary-tag",
               "description": "Tag description"
-            },
-            {
+            }},
+            {{
               "name": "Secondary Tag",
               "slug": "secondary-tag",
               "description": "Tag description"
-            }
+            }}
           ]
-        }
+        }}
         """
 
         full_prompt = f"""
@@ -487,6 +488,12 @@ def generate_seo_content(topic, author, cta_text, cta_link, references_list):
                     "@type": "Person",
                     "name": author["name"],
                 }
+
+        # Update references to use today's date
+        if "article" in seo_data and "references" in seo_data["article"]:
+            current_date = datetime.now().strftime("%Y-%m-%d")
+            for reference in seo_data["article"]["references"]:
+                reference["publishDate"] = current_date
 
         # Ensure reading time is calculated if missing
         if "article" in seo_data and not seo_data["article"].get("readingTime"):
@@ -752,6 +759,11 @@ def upload_to_strapi(content, author_id, image_path):
             content["seo"]["structuredData"]["mainEntityOfPage"][
                 "@id"
             ] = f"https://bugninja.ai/blog/{unique_slug}"
+
+        # Update references to use today's date
+        if "article" in content and "references" in content["article"]:
+            for reference in content["article"]["references"]:
+                reference["publishDate"] = current_date
 
         # Update metaSocial with image ID
         if "metaSocial" in content["seo"]:

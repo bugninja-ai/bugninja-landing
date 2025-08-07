@@ -246,10 +246,10 @@ export function ArticleDetail({ article }: ArticleDetailProps) {
                   <h4 className="text-xl font-semibold text-gray-900 mt-8 mb-3" {...props} />
                 ),
                 ul: ({ node, ...props }) => (
-                  <ul className="text-xl text-gray-700 space-y-2 my-6" {...props} />
+                  <ul className="text-xl text-gray-700 space-y-2 my-6 list-disc list-inside" {...props} />
                 ),
                 ol: ({ node, ...props }) => (
-                  <ol className="text-xl text-gray-700 space-y-2 my-6" {...props} />
+                  <ol className="text-xl text-gray-700 space-y-2 my-6 list-decimal list-inside" {...props} />
                 ),
                 li: ({ node, ...props }) => (
                   <li className="text-xl text-gray-700 leading-relaxed" {...props} />
