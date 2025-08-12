@@ -12,8 +12,9 @@ interface ArticlePageProps {
   }
 }
 
-// Force dynamic rendering for all article pages to handle new articles
+// Force dynamic rendering for all article pages to handle new articles (works in production too)
 export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 async function getArticle(slug: string) {
   try {

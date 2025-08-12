@@ -7,8 +7,9 @@ import { CTASection } from '@/components/cta-section'
 import { getAllArticles, getFeaturedArticles } from '@/utils/strapi'
 import { Metadata } from 'next'
 
-// Force dynamic rendering to always fetch fresh data
+// Force dynamic rendering to always fetch fresh data (works in production too)
 export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 export const metadata: Metadata = {
   title: 'Blog - AI Testing Insights & Tutorials | Bugninja',
