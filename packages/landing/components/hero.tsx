@@ -5,7 +5,7 @@ import { SecondaryButton } from './secondary-button'
 import Image from 'next/image'
 import { useEffect, useRef, useState } from 'react'
 import gsap from 'gsap'
-import { ChevronLeft, ChevronRight } from 'lucide-react'
+import { ChevronLeft, ChevronRight, Github } from 'lucide-react'
 
 export function Hero() {
   const logoRef = useRef<HTMLImageElement>(null)
@@ -152,7 +152,7 @@ export function Hero() {
               ref={subheadlineRef}
               className="mt-10 sm:mt-2 text-lg leading-8 text-muted-foreground max-w-xl"
             >
-              Simulate real users for E2E testing and find bugs in your product before they cost you money.
+              Open source AI-powered E2E testing to simulate real users and find bugs in your product before they cost you.
             </p>
             <div
               ref={buttonsRef}
@@ -161,8 +161,12 @@ export function Hero() {
               <CTAButton href="/book-meeting">
                 Get started for free
               </CTAButton>
-              <SecondaryButton href="/book-meeting">
-                Book a demo
+              <SecondaryButton
+                href="https://github.com/bugninja-ai/bugninja"
+                className="flex items-center gap-2"
+              >
+                <Github className="h-4 w-4" />
+                <span>View on GitHub</span>
               </SecondaryButton>
             </div>
           </div>

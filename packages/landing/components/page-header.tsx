@@ -5,7 +5,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { Button } from '@bugninja/shared-ui/components/ui/button'
 import { Navigation } from './navigation'
-import { Menu, X } from 'lucide-react'
+import { Menu, X, Github } from 'lucide-react'
 import { useState, useEffect } from 'react'
 import { NavigationOverlay } from './navigation-overlay'
 
@@ -16,6 +16,7 @@ interface PageHeaderProps {
 export function PageHeader({ className }: PageHeaderProps) {
   const [isOpen, setIsOpen] = useState(false)
   const [isScrolled, setIsScrolled] = useState(false)
+  const [starCount, setStarCount] = useState<number | null>(null)
 
   useEffect(() => {
     const handleScroll = () => {
@@ -25,6 +26,27 @@ export function PageHeader({ className }: PageHeaderProps) {
     window.addEventListener('scroll', handleScroll, { passive: true })
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
+
+  useEffect(() => {
+    async function fetchStars() {
+      try {
+        const response = await fetch('https://api.github.com/repos/bugninja-ai/bugninja')
+        if (!response.ok) return
+        const data = await response.json()
+        if (typeof data.stargazers_count === 'number') {
+          setStarCount(data.stargazers_count)
+        }
+      } catch (error) {
+        console.error('Failed to load GitHub stars', error)
+      }
+    }
+
+    fetchStars()
+  }, [])
+
+  const formattedStars = starCount !== null
+    ? Intl.NumberFormat('en-US', { notation: 'compact', maximumFractionDigits: 1 }).format(starCount)
+    : '—'
 
   return (
     <div className="sticky top-0 z-50">
@@ -59,14 +81,25 @@ export function PageHeader({ className }: PageHeaderProps) {
 
             {/* Right section - Action Buttons */}
             <div className="w-[200px] flex-shrink-0 flex items-center justify-end gap-3">
-              <Button variant="ghost" size="default" className="whitespace-nowrap text-muted-foreground hover:text-foreground" asChild>
-                <Link href="/book-meeting">
-                  Book a demo
+              <Button
+                variant="ghost"
+                size="default"
+                className="whitespace-nowrap text-muted-foreground hover:text-foreground"
+                asChild
+              >
+                <Link
+                  href="https://github.com/bugninja-ai/bugninja"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2"
+                >
+                  <Github className="h-4 w-4" aria-hidden="true" />
+                  <span>{formattedStars}</span>
                 </Link>
               </Button>
               <Button size="default" className="whitespace-nowrap" asChild>
                 <Link href="/book-meeting">
-                  Log in or register
+                  Book a demo
                 </Link>
               </Button>
             </div>
@@ -115,14 +148,26 @@ export function PageHeader({ className }: PageHeaderProps) {
 
             {/* Right section - Action Buttons (tablet only) */}
             <div className="hidden sm:flex flex-1 items-center justify-end gap-3">
-              <Button variant="ghost" size="default" className="whitespace-nowrap" asChild>
-                <Link href="/book-meeting">
-                  Book a demo
+              <Button
+                variant="ghost"
+                size="default"
+                className="whitespace-nowrap"
+                asChild
+              >
+                <Link
+                  href="https://github.com/bugninja-ai/bugninja"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 text-muted-foreground hover:text-foreground"
+                  aria-label="View GitHub stars"
+                >
+                  <Github className="h-4 w-4" aria-hidden="true" />
+                  <span>{formattedStars}</span>
                 </Link>
               </Button>
               <Button size="default" className="whitespace-nowrap" asChild>
                 <Link href="/book-meeting">
-                  Log in or register
+                  Book a demo
                 </Link>
               </Button>
             </div>

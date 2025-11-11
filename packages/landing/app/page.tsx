@@ -10,6 +10,7 @@ import { Divider } from '@/components/divider'
 import { Pricing } from '@/components/pricing'
 import { LogoTicker } from '@/components/logo-ticker'
 import { IntegrationsTicker } from '@/components/integrations-ticker'
+import { Nvidia } from '@/components/nvidia'
 
 export default function Home() {
   return (
@@ -17,6 +18,8 @@ export default function Home() {
       <PageHeader />
       <main className="flex-1">
         <Hero />
+        <Divider />
+        <Nvidia />
         <Divider />
         <LogoTicker />
         <Divider />

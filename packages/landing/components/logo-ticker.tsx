@@ -19,6 +19,11 @@ const logos = [
   { src: '/partner4.png', alt: 'Partner 4' },
   { src: '/partner5.png', alt: 'Partner 5' },
   { src: '/partner6.png', alt: 'Partner 6' },
+  { src: '/partner7.png', alt: 'Partner 6' },
+  { src: '/partner8.png', alt: 'Partner 6' },
+  { src: '/partner9.png', alt: 'Partner 6' },
+  { src: '/partner10.png', alt: 'Partner 6' },
+
 ]
 
 export function LogoTicker() {

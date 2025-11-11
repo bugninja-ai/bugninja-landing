@@ -11,7 +11,7 @@ import { ArticlesClient } from './articles-client';
 export async function Articles() {
   let articles: Article[] = [];
 
-  try {
+      try {
     // Get all articles and sort by date to get the 3 most recent
     const response = await getAllArticles();
     const sortedArticles = response.data.sort((a, b) => {
@@ -24,8 +24,8 @@ export async function Articles() {
     articles = sortedArticles.slice(0, 3);
     
     console.log(`🏠 Homepage: Showing ${articles.length} most recent articles`);
-  } catch (error) {
-    console.error('Failed to fetch articles:', error);
+      } catch (error) {
+        console.error('Failed to fetch articles:', error);
     articles = [];
   }
 
